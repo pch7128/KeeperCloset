@@ -1,0 +1,3 @@
+[submodule "KeeperCloset/secure-submodule"]
+	path = KeeperCloset/secure-submodule
+	url = https://github.com/pch7128/secure-submodule.git

@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>KeeperCloset 예약</title>
+<style>
+/*	header*/
+	
+		* {
+		margin:0;
+		padding:0;
+	}
+
+	html,body {	
+		height: 100%; 
+		min-width: 1050px; 
+	}
+
+	a{
+		text-decoration: none;
+	}
+	a:visited{
+		color:white;
+	}
+	header{
+		
+		background-color: black;
+	}
+	
+	.headerM{
+		display: flex;
+		flex-direction: row;
+		flex-wrap: nowrap;
+		justify-content: space-between;
+		align-items: center;
+		height: 150px;
+		width: 980px;
+		margin: 0 auto;
+	}
+	
+	.mainlogo{
+		font-size: 28px;
+		font-weight: 500;
+		color: white;
+	}
+	
+	menu>ul{
+		list-style: none;
+		display: flex;
+		flex-direction: row;
+		flex-wrap: nowrap;
+		justify-content: space-between;
+		align-items: center;
+		width: 500px;
+	}
+	
+	menu>ul>li>a{
+		color: white;
+		font-size: 18px;
+	}
+/*	header end  */
+	
+	
+	main{
+		
+		margin-top: 100px;
+    	margin-bottom: 100px;
+	}
+	.rvSection{
+		margin-left: 15rem;
+    	position: relative;
+    	margin-right: 15rem;
+	}
+	.wrap{
+		display: flex;
+    	flex-direction: column;
+    	align-items: center;
+		width: 500px;
+    	margin: 0 auto;
+	}
+	.formwrap{
+		margin-top:30px;
+	}
+	.rvForm{	
+		display: flex;
+    	flex-direction: column;
+    	justify-content: space-between;
+		height: 800px;
+	}
+	.data-brackets-id-933{
+		display: flex;
+    	flex-direction: column;
+		margin-top: 20px;
+			
+	}
+	.datewrap{
+		display: flex;
+    	flex-direction: row;
+	}
+	.rvdate{
+		display: flex;
+    	flex-direction: column;
+		
+	}
+	#startdate,#enddate{
+		width: 140px;
+	}
+	input,select{
+		height: 35px;
+	}
+	.btnwrap{
+		margin:0 auto;
+		text-align: center;
+		margin-top: 20px;
+	}
+	#rvbtn{
+		width: 100%;
+		height: 35px;
+			
+	}
+</style>
+<script 
+	src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous">
+</script>
+<script>
+	$(function(){
+		var today = new Date();
+		var dd=today.getDate();
+		var mm=today.getMonth()+1;
+		var yyyy=today.getFullYear();
+		if(dd<10){
+			dd='0'+dd
+		}
+		if(mm<10){
+			mm='0'+mm
+		}
+		today=yyyy+'-'+mm+'-'+dd;
+		document.getElementById('startdate').setAttribute("min",today);
+	})
+
+	function inSdate(){
+		var start=document.getElementById('startdate').value;
+		if(start==null&&start==""){
+			alert('예약 시작할 날짜를 입력해주세요');
+			$('#startdate').focus();
+			return false;
+		}
+	}
+	
+	function inEdate(){
+		var end=document.getElementById('enddate').value;
+		if(end==null&&end==""){
+			alert('예약 종료할 날짜를 입력해주세요');
+			$('#enddate').focus();
+			return false;
+		}
+	}
+
+	function booking(){
+		
+		var start=document.getElementById('startdate').value;
+		
+		
+		
+	}
+
+</script>
+</head>
+<body>
+
+<header>
+
+	<div class="headerM">
+		<div class="mainlogo">
+		<a href="/keep/main">KeeperCloset</a>
+		</div>
+		<menu>
+			<ul>
+				<li>
+					<a href="/rv/keeping">예약하기</a>
+				</li>
+				<li>
+					<a href="">이용후기</a>
+				</li>
+				<li>
+					<a href="">문의사항</a>
+				</li>
+				<li>
+					<th:block sec:authorize="isAnonymous()">
+						<a href="/user/login">로그인</a>
+					</th:block>
+					<th:block sec:authorize="isAuthenticated()">
+						<a href="/user/mypage" sec:authentication="principal.member.id">
+					</th:block>
+				</li>
+			</ul>
+		</menu>
+		<div class="logoutT" sec:authorize="isAuthenticated()">
+			<a href="/logout">로그아웃</a>
+		</div>
+	</div>
+</header>
+	
+	<main>
+		<section class="rvSection">
+			<div class="wrap">
+				<h1>예약</h1>
+			
+				<div class="formwrap">
+					<form id="rvForm" method="post" action="/rv/keeping" onsubmit="return booking()">
+						<input type="hidden" id="unum" name="unum" value="">
+
+						<div class="datewrap">
+							<div class="rvdate">
+								<label>시작일자</label>
+								<input id="startdate" name="startdate" type="date" oninput="inSdate()">
+							</div>
+							<div class="rvdate" style="margin-left: 8px;">
+								<label>종료일자</label>
+								<input id="enddate" name="enddate" type="date" oninput="inEdate()">
+							</div>
+						</div>
+						<div class="data-brackets-id-933">
+							<label>예약자명</label>
+							<input type="text" id="rv_name" name="rv_name">
+						</div>
+						<div class="data-brackets-id-933">
+							<label>지점명</label>
+							<select name="stnum">
+								<option>선택
+								<option value="1">서울 구로지점
+								<option value="2">부산 해운대지점
+								<option value="3">경기 일산지점
+							</select>
+						</div>
+						<div class="data-brackets-id-933">
+							<label>크기</label>
+							<select name="boxsize">
+								<option value="6000">소형 (40*30*15)
+								<option value="7000">중형 (50*40*30)
+								<option value="8000">대형 (60*40*30)
+							</select>
+						</div>
+						<div class="data-brackets-id-933">
+							<label>수량</label>
+							<input type="number" id="rv_cnt" name="rv_cnt" value="1" max="3">
+						</div>
+						<div class="data-brackets-id-933">
+							<label>비용</label>
+							<input type="text" id="rv_price" name="rv_price" value="">
+						</div>
+						<div class="btnwrap">
+							<button id="rvbtn" type="submit">예약</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</section>
+	</main>
+
+</body>
+</html>

@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html xmlns:th="http//www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>로그인</title>
+<style>
+/*	header*/
+	
+		* {
+		margin:0;
+		padding:0;
+	}
+
+	html,body {	
+		height: 100%; 
+		min-width: 1050px; 
+	}
+
+	a{
+		text-decoration: none;
+	}
+	
+	a:visited{
+		color:white;
+	}
+	
+	header{
+		
+		background-color: black;
+	}
+	
+	.headerM{
+		display: flex;
+		flex-direction: row;
+		flex-wrap: nowrap;
+		justify-content: space-between;
+		align-items: center;
+		height: 150px;
+		width: 980px;
+		margin: 0 auto;
+	}
+	
+	.mainlogo{
+		font-size: 28px;
+		font-weight: 500;
+		color: white;
+	}
+	
+	menu>ul{
+		list-style: none;
+		display: flex;
+		flex-direction: row;
+		flex-wrap: nowrap;
+		justify-content: space-between;
+		align-items: center;
+		width: 500px;
+	}
+	
+	menu>ul>li>a{
+		color: white;
+		font-size: 18px;
+	}
+/*	header end  */
+	
+	main{
+		
+		margin-top: 100px;
+    	margin-bottom: 100px;
+	}
+	
+	.loginSection{
+		position: relative;
+		margin-left: 15rem;
+		margin-right: 15rem;
+	}
+	
+	.wrap{
+		margin: 0 auto;
+    	text-align: center;
+		padding-left: 70px;
+	    padding-right: 70px;
+	    display: flex;
+	    flex-direction: column;
+	    justify-content: center;
+	    align-content: center;
+	    align-items: stretch;
+	}
+	
+	#loginForm{
+		margin-top: 40px;
+   		width: 100%;
+	}
+	
+	.data-brackets-id-wrap{
+		border: 1px solid;
+		border-radius: 4px;
+		width: 340px;
+		height: 55px;
+		margin: 0 auto;
+		/* padding-left: 3px; */
+		display: flex;
+		align-content: center;
+		justify-content: flex-start;
+		align-items: center;
+		padding-left: 7px;
+	}
+	
+	.data-brackets-id-input{
+		border: none;
+		width: 300px;
+		font-size: 16px;
+		height: 100%
+	}
+	
+	.data-brackets-id-input:focus{
+		outline: none !important;
+	}
+	
+	.dowrap{
+		margin-top: 35px;
+	}
+	.logbtn{
+		width: 350px;
+    	height: 51px;
+		font-size: 18px;
+		background: black;
+		border-radius: 4px;
+		color: white;
+		font-weight: 600;
+		border-width: thin
+		
+	}
+	
+	.logbtn:hover{
+		background: white;
+		color: black;
+		border-color: gray;
+	}
+	
+	.joinbtn{
+		width: 350px;
+    	height: 51px;
+		font-size: 18px;
+		background: white;
+		border-radius: 4px;
+		color: black;
+		font-weight: 600;
+		border-width: thin;
+		border-color: gray;
+	}
+	
+	.joinbtn:hover{
+		background: black;
+		color: white;
+		
+	}
+	.kakaowrap{
+		margin-top: 20px;
+	}
+</style>
+</head>
+<body>
+<header>
+		<div class="headerM">
+			<div class="mainlogo">
+				<a href="/keep/main">KeeperCloset</a>
+			</div>
+			<menu>
+				<ul>
+					<li>
+						<a href="/rv/keeping">예약하기</a>
+					</li>
+					<li>
+						<a href="">이용후기</a>
+					</li>
+					<li>
+						<a href="">문의사항</a>
+					</li>
+					<li>
+						<th:block sec:authorize="isAnonymous()">
+							<a href="/user/login">로그인</a>
+						</th:block>
+						<th:block sec:authorize="isAuthenticated()">
+							<a href="/user/mypage" sec:authentication="principal.member.id">
+						</th:block>
+					</li>
+				</ul>
+			</menu>
+			<div class="logoutT" sec:authorize="isAuthenticated()">
+				<a href="/logout">로그아웃</a>
+			</div>
+		</div>
+</header>
+
+<main>
+	<section class="loginSection">
+		<div class="wrap">
+			<h1 class="logintitle">로그인</h1>
+			<form id="loginForm" action="/doLogin" method="post">
+				<div class="data-brackets-id-wrap">
+					<input class="data-brackets-id-input" type="text" name="u_email" id="u_email" placeholder="아이디를 입력해주세요">
+				</div>
+				<div class="data-brackets-id-wrap" style="margin-top: 10px;">
+					<input class="data-brackets-id-input" type="text" name="u_pwd" id="u_pwd" placeholder="비밀번호를 입력해주세요">
+				</div>
+				<div class="dowrap">
+					<div>
+						<button class="logbtn" type="submit">로그인</button>
+					</div>
+					<div style="margin-top: 10px;">
+						<button type="button" class="joinbtn" onclick="location.href='/user/signup'">
+							회원가입</button>
+						</div>
+					</div>
+				</form>
+				<div class="kakaowrap">
+					<a href="/oauth2/authorization/kakao">카카오로 로그인</a>
+				</div>
+			</div>
+		</section>
+</main>
+
+</body>
+</html>

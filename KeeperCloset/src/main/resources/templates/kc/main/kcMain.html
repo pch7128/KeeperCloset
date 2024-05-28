@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html xmlns:th="http//www.thymeleaf.org"
+	 xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+<title>KeeperCloset</title>
+<style>
+	* {
+		margin:0;
+		padding:0;
+	}
+
+	html,body {	
+		height: 100%; 
+		min-width: 1050px; 
+	}
+
+	a{
+		text-decoration: none;
+	}
+	a:visited{
+		color:white;
+	}
+	header{
+		
+		background-color: black;
+	}
+	
+	.headerM{
+		display: flex;
+		flex-direction: row;
+		flex-wrap: nowrap;
+		justify-content: space-between;
+		align-items: center;
+		height: 150px;
+		width: 980px;
+		margin: 0 auto;
+	}
+	
+	.mainlogo{
+		
+		font-size: 28px;
+		font-weight: 500;
+		color: white;
+	}
+	
+	menu>ul{
+		list-style: none;
+		display: flex;
+		flex-direction: row;
+		flex-wrap: nowrap;
+		justify-content: space-between;
+		align-items: center;
+		width: 500px;
+	}
+	
+	menu>ul>li>a{
+		color: white;
+		font-size: 18px;
+	}
+	span{
+		color: white;
+		font-size: 18px;
+	}
+	.logoutT{
+		color: white;
+		font-size: 18px;
+	}
+</style>
+</head>
+<body>
+<header>
+
+	<div class="headerM">
+		<div class="mainlogo">
+		<a href="/keep/main">KeeperCloset</a>
+		</div>
+		<menu>
+			<ul>
+				<li>
+					<a href="/rv/keeping">예약하기</a>
+				</li>
+				<li>
+					<a href="">이용후기</a>
+				</li>
+				<li>
+					<a href="">문의사항</a>
+				</li>
+				<li>
+					<th:block sec:authorize="isAnonymous()">
+						<a href="/user/login">로그인</a>
+					</th:block>
+					<th:block sec:authorize="isAuthenticated()">
+						<a href="/user/mypage" sec:authentication="principal.member.id">
+					</th:block>
+				</li>
+			</ul>
+		</menu>
+		<div class="logoutT" sec:authorize="isAuthenticated()">
+			<a href="/logout">로그아웃</a>
+		</div>
+	</div>
+</header>
+
+</body>
+
+</html>

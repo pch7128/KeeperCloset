@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html xmlns:th="http//www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>회원가입</title>
+<style>
+		/*	header*/
+	
+		* {
+		margin:0;
+		padding:0;
+	}
+
+	html,body {	
+		height: 100%; 
+		min-width: 1050px; 
+	}
+
+	a{
+		text-decoration: none;
+	}
+	a:visited{
+		color:white;
+	}
+	header{
+		
+		background-color: black;
+	}
+	
+	.headerM{
+		display: flex;
+		flex-direction: row;
+		flex-wrap: nowrap;
+		justify-content: space-between;
+		align-items: center;
+		height: 150px;
+		width: 980px;
+		margin: 0 auto;
+	}
+	
+	.mainlogo{
+		font-size: 28px;
+		font-weight: 500;
+		color: white;
+	}
+	
+	menu>ul{
+		list-style: none;
+		display: flex;
+		flex-direction: row;
+		flex-wrap: nowrap;
+		justify-content: space-between;
+		align-items: center;
+		width: 500px;
+	}
+	
+	menu>ul>li>a{
+		color: white;
+		font-size: 18px;
+	}
+/*	header end  */
+		
+main{
+		
+		margin-top: 100px;
+    	margin-bottom: 100px;
+	}
+	.joinSection{
+		position: relative;
+		margin-left: 15rem;
+		margin-right: 15rem;
+	}
+	.wrap{
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+	}
+	#joinForm{
+		height: 700px;
+		display: flex;
+		flex-direction: column;
+		justify-content: space-between;
+	}
+	.data-brackets-id-106{
+		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
+		justify-content: space-between;
+	}
+	.inputwrap{
+		border-bottom: 1px solid gray;
+		width: 300px;
+		height: 40px;
+	}
+	.inputdata{
+		border: none;
+		height: 100%;
+		padding-left: 3px;
+		font-size: 18px;
+	}
+	.inputdata:focus{
+		outline: none !important;
+	}
+	
+	.btnwrap{
+		margin: 0 auto;
+    	text-align: center;
+	}
+</style>
+<script 
+	src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous">
+</script>
+<script>
+	function join(){
+		
+		var data=$('#joinForm').serialize();
+		
+		$.ajax({
+			url:'/user/signup',
+			type:'post',
+			cache:false,
+			data: data,
+			dataType:'json',
+			success:function(res){
+				alert(res.result ? '가입 성공':'실패');
+				location.href='/user/login';
+			},
+			error:function(xhr, status, err){
+				alert(err);
+			}
+		});
+	}
+</script>
+</head>
+<body>
+	<header>
+		<div class="headerM">
+			<div class="mainlogo">
+				<a href="/keep/main">KeeperCloset</a>
+			</div>
+			<menu>
+				<ul>
+					<li>
+						<a href="/rv/keeping">예약하기</a>
+					</li>
+					<li>
+						<a href="">이용후기</a>
+					</li>
+					<li>
+						<a href="">문의사항</a>
+					</li>
+					<li>
+						<th:block sec:authorize="isAnonymous()">
+							<a href="/user/login">로그인</a>
+						</th:block>
+						<th:block sec:authorize="isAuthenticated()">
+							<a href="/user/mypage" sec:authentication="principal.member.id">
+						</th:block>
+					</li>
+				</ul>
+			</menu>
+			<div class="logoutT" sec:authorize="isAuthenticated()">
+				<a href="/logout">로그아웃</a>
+			</div>
+		</div>
+	</header>
+
+	<main>
+		<section class="joinSection">
+			<div class="wrap">
+				<div><h1>회원가입</h1></div>
+				<div style="margin-top: 50px;">
+					<form id="joinForm" method="post">
+						<div class="data-brackets-id-106">
+							<label>이름</label>
+							<div class="inputwrap">
+								<input class="inputdata" type="text" name="u_name" id="u_name">
+							</div>
+						</div>
+						<div class="data-brackets-id-106">
+							<label>아이디(이메일)</label>
+							<div class="inputwrap">
+								<input class="inputdata" type="text" name="u_email" id="u_email">
+							</div>
+							<button type="button">중복확인</button>
+						</div>
+						<div class="data-brackets-id-106">
+							<label>비밀번호</label>
+							<div class="inputwrap">
+								<input class="inputdata" type="password" name="u_pwd" id="u_pwd">
+							</div>
+						</div>
+						<div class="data-brackets-id-106">
+							<label>비밀번호 확인</label>
+							<div class="okpwd">
+								<div class="inputwrap">
+									<input class="inputdata" type="password" id="u_pwd">
+								</div>
+								<button type="button">확인</button>
+							</div>
+							<div>
+
+							</div>
+						</div>
+						<div class="data-brackets-id-106">
+							<label>번호</label>
+							<div class="inputwrap">
+								<input class="inputdata" type="text" name="u_tel" id="u_tel">
+							</div>
+						</div>
+						<input type="hidden" name="u_authority" id="u_authority" value="ROLE_USER">
+						<div class="btnwrap">
+							<button type="button" onclick="join()">가입</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</section>
+	</main>
+</body>
+</html>

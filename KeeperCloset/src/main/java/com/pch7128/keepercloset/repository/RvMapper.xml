@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.pch7128.keepercloset.repository.RvMapper">
+
+	<select id="getSizeList">
+		SELECT * FROM boxsize_t
+	</select>
+	
+	<select id="getStorageList">
+		SELECT * FROM storage_t
+	</select>
+
+</mapper>
