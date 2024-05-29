@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
-<head>
+<head xmlns:th="http//www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <meta charset="UTF-8">
 <title>KeeperCloset 예약</title>
 <style>
@@ -108,6 +109,14 @@
 	input,select{
 		height: 35px;
 	}
+	
+	#rv_price{
+		 width: 180px;
+	}
+	.pricebtn{
+		width: 70px;
+    	height: 39px;
+	}
 	.btnwrap{
 		margin:0 auto;
 		text-align: center;
@@ -167,13 +176,14 @@
 		if(ntest.test(name)==false){
 			document.getElementById("namecheck").innerHTML="한글 또는 영문만 입력해주세요";
 			name.focus();
-			return false;
+			return true;
 		} else {
 			document.getElementById("namecheck").remove();
-			return true;
+			return false;
 		}
 	}
-	
+
+/* 	
 	window.onload = function () {
 		const boxsize = document.getElementById('boxsize');
 		boxsize.addEventListener("change", function(e){
@@ -192,14 +202,14 @@
 				document.getElementById('rv_price').setAttribute("value",0);
 			}
 			
-	
+			
 			
 		});
 		
 		const cnt = document.getElementById('rv_cnt');
 		cnt.addEventListener("change", function(e){
 			var price=document.getElementById('rv_price').value;	
-			var total = price*cnt.value;
+			
 			document.getElementById('rv_price').value=total;
 			
 		});
@@ -207,13 +217,70 @@
 			
 	}
 	
-
+	 */
 	
+	
+	
+	function total(){
+		 
+		var start = document.getElementById('startdate').value;
+		var end = document.getElementById('enddate').value;
+		var cnt = document.getElementById('rv_cnt');
+		var boxsize = document.getElementById('boxsize');
+		
+		const edate=new Date(end);
+		const sdate=new Date(start);
+		
+		var diff=Math.abs((edate.getTime()-sdate.getTime())/(1000*60*60*24));
+		if(start&&end){
+			var price =diff*boxsize.value*cnt.value;
+			console.log(price);
+			document.getElementById('rv_price').setAttribute("value",price);
+			if(boxsize){
+				boxsize.addEventListener("click", function(e){
+					document.getElementById('rv_price').setAttribute("value",0);
+					cnt.value=0;
+				})
+			}
+			if(cnt){
+				cnt.addEventListener("click", function(e){
+					var price =diff*boxsize.value*cnt.value;
+					document.getElementById('rv_price').setAttribute("value",price);
+				})
+			}
+		} else {
+			document.getElementById('rv_price').setAttribute("value",0);
+		}	
+	 }
+	 
+	 
 
 	function booking(){
 		
-		var start=document.getElementById('startdate').value;
+		var tp=document.getElementById('rv_price').value;
+		var name=document.getElementById('rv_name').value;
+		var storage=document.getElementById('storage').value;
 		
+		
+		if(name==""&&name==null){
+			alert('예약자명을 입력해주세요');
+			return false;
+		}
+		
+		if(expName()){
+			alert('예약자명은 한글 또는 영문만 입력가능합니다');
+			return false;
+		}
+		
+		if(storage==0){
+			alert('예약할 지점을 선택해주세요');
+			return false;
+		}
+		
+		if(tp==0){
+			alert('예약확인을 다시 한번 더 해주세요');
+			return false;
+		}
 		
 		
 	}
@@ -255,6 +322,7 @@
 	</div>
 </header>
 	
+		
 	<main>
 		<section class="rvSection">
 			<div class="wrap">
@@ -262,7 +330,7 @@
 			
 				<div class="formwrap">
 					<form id="rvForm" method="post" action="/rv/keeping" onsubmit="return booking()">
-						<input type="hidden" id="unum" name="unum" value="">
+						<input type="hidden" id="unum" name="unum" th:value="${unum}">
 
 						<div class="datewrap">
 							<div class="rvdate">
@@ -281,8 +349,8 @@
 						</div>
 						<div class="data-brackets-id-933">
 							<label>지점명</label>
-							<select name="stnum">
-								<option>선택
+							<select name="stnum" id="storage">
+								<option value="0">선택
 								<option value="1">서울 구로지점
 								<option value="2">부산 해운대지점
 								<option value="3">경기 일산지점
@@ -302,8 +370,13 @@
 							<input type="number" id="rv_cnt" name="rv_cnt" value="1" min="1" max="3">
 						</div>
 						<div class="data-brackets-id-933">
-							<label>비용</label>
-							<input type="text" id="rv_price" name="rv_price">
+							<div>
+								<label>비용</label>	
+							</div>
+							<div>
+								<input type="text" id="rv_price" name="rv_price" readonly>
+								<button class="pricebtn" type="button" onclick="total()">예상금액</button>
+							</div>
 						</div>
 						<div class="btnwrap">
 							<button id="rvbtn" type="submit">예약</button>
@@ -313,6 +386,6 @@
 			</div>
 		</section>
 	</main>
-
+	
 </body>
 </html>
