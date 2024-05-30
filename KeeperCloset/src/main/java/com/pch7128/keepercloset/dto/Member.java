@@ -1,12 +1,17 @@
 package com.pch7128.keepercloset.dto;
 
+import java.util.List;
+
 import org.springframework.stereotype.Component;
+
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import lombok.Builder;
@@ -18,7 +23,6 @@ import lombok.RequiredArgsConstructor;
 @Data
 @RequiredArgsConstructor
 @Entity
-@Table(name="member")
 public class Member {
 	
 	@Id
@@ -46,6 +50,9 @@ public class Member {
 	
 	@Column(name="provider_id")
 	private String providerid;
+	
+	@OneToMany(mappedBy = "member")
+	private List<Reservation> rvlist;
 
 	@Builder
 	public Member(int unum, String name, String u_pwd, String id, String utel, String uauthority,

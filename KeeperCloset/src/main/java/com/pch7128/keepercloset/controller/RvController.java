@@ -19,18 +19,18 @@ import com.pch7128.keepercloset.dto.StorageDTO;
 import com.pch7128.keepercloset.oauth.OAuth2UserInfo;
 import com.pch7128.keepercloset.repository.RvMapper;
 import com.pch7128.keepercloset.repository.RvRepository;
+import com.pch7128.keepercloset.svc.RvSvc;
 
 @Controller
 @RequestMapping("/rv")
 public class RvController {
 	
 	@Autowired
-	private RvMapper rvm;
-	@Autowired
-	private RvRepository rvre;
+	private RvSvc rsvc;
 	
 	@GetMapping("/keeping")
 	public String bookingPage(@AuthenticationPrincipal PrincipalDetails principal,Model m) {
+		System.out.println(principal.getMember().getUnum());
 		if(principal!=null) {
 			m.addAttribute("unum", principal.getMember().getUnum());
 		} else {
@@ -43,10 +43,15 @@ public class RvController {
 	
 	@PostMapping("/keeping")
 	public String reservation(Reservation rv,Model m,@AuthenticationPrincipal PrincipalDetails principal) {
-		rvre.save(rv);
+		int unum = principal.getMember().getUnum();
 		
+		Reservation result=rsvc.saveRv(unum, rv);
+		if(result==null) {
+			return "kc/rv/bookingFail";
+		}
 		return "kc/rv/bookingResult";
 	}
+	
 	
 	
 

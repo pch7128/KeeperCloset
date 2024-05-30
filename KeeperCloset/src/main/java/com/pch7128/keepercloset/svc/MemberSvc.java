@@ -1,5 +1,6 @@
 package com.pch7128.keepercloset.svc;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +13,9 @@ import org.springframework.stereotype.Service;
 import com.pch7128.keepercloset.dto.JoinDTO;
 import com.pch7128.keepercloset.dto.Member;
 import com.pch7128.keepercloset.dto.PrincipalDetails;
+import com.pch7128.keepercloset.dto.Reservation;
 import com.pch7128.keepercloset.repository.MemberRepository;
+import com.pch7128.keepercloset.repository.RvRepository;
 
 @Service
 public class MemberSvc implements UserDetailsService{
@@ -21,7 +24,8 @@ public class MemberSvc implements UserDetailsService{
 	private MemberRepository mr;
 	@Autowired
 	private BCryptPasswordEncoder enc;
-	
+	@Autowired
+	private RvRepository rvre;
 
 	@Override
 	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
@@ -52,6 +56,13 @@ public class MemberSvc implements UserDetailsService{
 		return true;
 	}
 	
+	public List<Reservation> getRvlist(int unum){
+		
+		Optional<Member> opM=mr.findById(unum);
+		Member m=opM.get();
+		List<Reservation> rvlist=opM.get().getRvlist();
+		return rvlist;
+	}
 	
 
 }

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http//www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+<meta charset="UTF-8">
+<title>마이페이지-예약 현황</title>
+</head>
+<body>
+	<header>
+		<div class="headerM">
+			<div class="mainlogo">
+				<a href="/keep/main">KeeperCloset</a>
+			</div>
+			<menu>
+				<ul>
+					<li>
+						<a href="/rv/keeping">예약하기</a>
+					</li>
+					<li>
+						<a href="">이용후기</a>
+					</li>
+					<li>
+						<a href="">문의사항</a>
+					</li>
+					<li>
+						<th:block sec:authorize="isAnonymous()">
+							<a href="/user/login">로그인</a>
+						</th:block>
+						<th:block sec:authorize="isAuthenticated()">
+							<a href="/user/mypage" sec:authentication="principal.member.id">
+						</th:block>
+					</li>
+				</ul>
+			</menu>
+			<div class="logoutT" sec:authorize="isAuthenticated()">
+					<a href="/logout">로그아웃</a>
+			</div>
+		</div>
+	</header>
+	<main>
+		<section class="RvCheck">
+			<div>
+				<table>
+					<thead><tr><th>이용시작</th></thead>
+					<tr th:each="rv : ${m}">
+						<td>[[${rv.startdate}]]</td>
+					</tr>
+				</table>
+			</div>
+			
+		</section>
+	</main>
+</body>
+</html>
