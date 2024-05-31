@@ -56,12 +56,12 @@ public class MemberSvc implements UserDetailsService{
 		return true;
 	}
 	
-	public List<Reservation> getRvlist(int unum){
+	public Member getRvlist(int unum){
 		
 		Optional<Member> opM=mr.findById(unum);
 		Member m=opM.get();
 		List<Reservation> rvlist=opM.get().getRvlist();
-		return rvlist;
+		return m;
 	}
 	
 

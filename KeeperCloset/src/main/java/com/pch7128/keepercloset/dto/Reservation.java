@@ -30,20 +30,26 @@ public class Reservation {
 	
 	private String reservation_no;
 	
-	private String startdate;
+	private java.sql.Date startdate;
 	
-	private String enddate;
+	private java.sql.Date enddate;
 	
 	private String rv_name;
 	
-	private int stnum;
+//	private int stnum;
 
 	private String boxsize;
 
 	private int rv_cnt;
 	
+	private int rv_price;
+	
 	@ManyToOne
 	@JoinColumn(name="unum")
 	private Member member;
+	
+	@ManyToOne
+	@JoinColumn(name="stnum")
+	private StorageDTO store;	
 	
 }

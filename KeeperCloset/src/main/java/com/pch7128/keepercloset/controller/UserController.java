@@ -18,6 +18,7 @@ import com.pch7128.keepercloset.dto.Member;
 import com.pch7128.keepercloset.dto.PrincipalDetails;
 import com.pch7128.keepercloset.dto.Reservation;
 import com.pch7128.keepercloset.svc.MemberSvc;
+import com.pch7128.keepercloset.svc.RvSvc;
 
 @Controller
 @RequestMapping("/user")
@@ -26,6 +27,8 @@ public class UserController {
 	
 	@Autowired
 	private MemberSvc mSvc;
+	@Autowired
+	private RvSvc rSvc;
 	
 	@GetMapping("/login")
 	public String loginForm() {
@@ -60,9 +63,10 @@ public class UserController {
 	public String rvCheck(Model m, @AuthenticationPrincipal PrincipalDetails principal
 			, @PathVariable("unum") int unum) {
 		
-		List<Reservation> rvlist=mSvc.getRvlist(unum);
-
-		m.addAttribute("m", rvlist);
+//		List<Reservation> rvlist=mSvc.getRvlist(unum);
+		Member member=mSvc.getRvlist(unum);
+		
+		m.addAttribute("m", member);
 		
 		return "kc/mypage/bookingList";
 	}

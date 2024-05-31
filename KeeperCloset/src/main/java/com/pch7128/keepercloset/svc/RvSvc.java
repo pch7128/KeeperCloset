@@ -8,9 +8,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.pch7128.keepercloset.dto.Reservation;
+import com.pch7128.keepercloset.dto.StorageDTO;
 import com.pch7128.keepercloset.dto.Member;
 import com.pch7128.keepercloset.repository.MemberRepository;
 import com.pch7128.keepercloset.repository.RvRepository;
+import com.pch7128.keepercloset.repository.StoreRepository;
 
 @Service
 public class RvSvc {
@@ -22,6 +24,9 @@ public class RvSvc {
 	private RvRepository rvre;
 	@Autowired
 	private static final AtomicLong counter = new AtomicLong(0);
+	@Autowired
+	private StoreRepository stre;
+	
 	
 	public Reservation saveRv(int unum, Reservation rv) {
 		
@@ -48,4 +53,11 @@ public class RvSvc {
         return datePart + "-" + String.format("%05d", number); // 5자리 숫자로 포맷팅
 		
 	}
+	
+//	public StorageDTO getStore(int stnum) {
+//		
+//		StorageDTO store=stre.findById(stnum).get();
+//		
+//		return store;
+//	}
 }

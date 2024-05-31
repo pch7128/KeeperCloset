@@ -4,6 +4,158 @@
 <head>
 <meta charset="UTF-8">
 <title>마이페이지-예약 현황</title>
+<style>
+	/*	header*/
+	
+		* {
+		margin:0;
+		padding:0;
+	}
+
+	html,body {	
+		height: 100%; 
+		min-width: 1050px; 
+	}
+
+	a{
+		text-decoration: none;
+	}
+	a:visited{
+		color:white;
+	}
+	header{
+		
+		background-color: black;
+	}
+	
+	.headerM{
+		display: flex;
+		flex-direction: row;
+		flex-wrap: nowrap;
+		justify-content: space-between;
+		align-items: center;
+		height: 150px;
+		width: 980px;
+		margin: 0 auto;
+	}
+	
+	.mainlogo{
+		font-size: 28px;
+		font-weight: 500;
+		color: white;
+	}
+	
+	menu>ul{
+		list-style: none;
+		display: flex;
+		flex-direction: row;
+		flex-wrap: nowrap;
+		justify-content: space-between;
+		align-items: center;
+		width: 500px;
+	}
+	
+	menu>ul>li>a{
+		color: white;
+		font-size: 18px;
+	}
+/*	header end  */
+
+	main{
+		margin-top:100px;
+		margin-bottom: 100px;
+	}
+	.RvCheckSection{
+		margin-left: 12rem;
+		margin-right: 12rem;
+		position: relative;
+	}
+	.rvlistwrap{
+		display: flex;
+    	flex-direction: column;
+	}
+	.tablewrap{
+		margin-top: 65px;
+	}
+	.rvTable{
+		width: 100%;
+		margin: 0 auto;
+		border-top: 1px solid gray;
+		border-collapse: collapse;
+		table-layout: fixed;
+		border-spacing: 0;
+	}
+	thead th{
+		height: 65px;
+		border-bottom: 1px solid gray;
+		font-size: 16px;
+		font-weight: 400px;
+	}
+	.inq_content{
+		height: 55px;
+		text-align: center;
+	}
+	table .inq_content:hover{
+		background-color: #f3f3f3;
+	}
+	.inq_content td{
+		border-bottom: 1px solid #f5f5f5;
+		font-size: 14px;
+		font-weight: 300;
+		color: black;
+	}
+	
+/*	  토글 내용   */
+
+	.detailwrap{
+		position: relative;
+		margin-left: 100px;
+    	margin-right: 100px;
+		margin-top: 50px;
+	}
+	.detailborder{
+		padding: 20px;
+	    border: 1px solid gainsboro;
+	    border-radius: 10px;
+	}
+	
+	.detail-row{
+    	display: flex;
+		align-items: center;
+    	text-align: center;
+		width: 100%;
+    	height: 50px;
+		
+	}
+	
+	.detail-row:not(:last-child){
+		border-bottom: 1px solid gainsboro;
+	}
+	.att{
+		width: 200px;
+	}
+	.rvDetail{
+		text-align: center;
+    	width: 100%;
+	}
+		
+</style>
+<script 
+	src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous">
+</script> 
+<script>
+
+	$(document).ready(function(){
+	    $('.board_content').hide();
+	
+	    // 제목을 클릭하면 해당 행의 숨겨진 내용이 토글됩니다.
+	    $('.inq_content').click(function(){
+	        // 해당 행의 .board_content 요소를 찾습니다.
+	        $(this).closest('tr').next('.board_content').toggle();
+	
+	    });
+	});
+</script>
 </head>
 <body>
 	<header>
@@ -38,16 +190,85 @@
 		</div>
 	</header>
 	<main>
-		<section class="RvCheck">
-			<div>
-				<table>
-					<thead><tr><th>이용시작</th></thead>
-					<tr th:each="rv : ${m}">
-						<td>[[${rv.startdate}]]</td>
-					</tr>
-				</table>
+		<section class="RvCheckSection">
+			<div class="rvlistwrap">
+				<div>
+					<h1 style="font-size: 30px">예약내역</h1>
+				</div>
+				
+				<div class="tablewrap">
+					<table class="rvTable">
+						<thead><tr><th>예약번호</th><th>이용시작</th><th>이용종료</th><th>예약자명</th></tr></thead>
+						<tbody>
+							<th:block th:if="${not #lists.isEmpty(m.rvlist)}" th:each="rv : ${m.rvlist}">
+								<tr class="inq_content" >
+									<td>[[${rv.reservation_no}]]</td>
+									<td>[[${rv.startdate}]]</td>
+									<td>[[${rv.enddate}]]</td>
+									<td>[[${rv.rv_name}]]</td>
+								</tr>
+								<tr class="board_content">
+									<td colspan="4">
+										<div class="detailwrap">
+											<div class="detailborder">
+												<div class="detail-row">
+													<div class="att">예약번호</div>
+													<div class="rvDetail">
+														[[${m.utel}]]
+													</div>
+												</div>
+												<div class="detail-row">
+													<div class="att">예약자명</div>
+													<div class="rvDetail">
+														[[${rv.rv_name}]]
+													</div>
+												</div>
+												<div class="detail-row">
+													<div class="att">연락처</div>
+													<div class="rvDetail">
+														[[${m.utel}]]
+													</div>
+												</div>
+												<div class="detail-row">
+													<div class="att">이용날짜</div>
+													<div class="rvDetail">
+														[[${rv.startdate}]] ~ [[${rv.enddate}]]
+													</div>
+												</div>
+												<div class="detail-row">
+													<div class="att">이용지점</div>
+													<div class="rvDetail">
+														[[${rv.store.st_name}]]
+													</div>
+												</div>
+												<div class="detail-row">
+													<div class="att">결제금액</div>
+													<div class="rvDetail">
+														[[${rv.rv_price}]]
+													</div>
+												</div>	
+												<div class="detail-row">
+													<div class="att">비고</div>
+													<div class="rvDetail">
+														[[${rv.boxsize}]] / [[${rv.rv_cnt}]]
+													</div>
+												</div>																																													
+											</div>																									
+										</div>
+									</td>
+								</tr>
+							</th:block>
+					        <th:block th:if="${#lists.isEmpty(m.rvlist)}">
+					            <tr>
+					                <td colspan="4">
+					                    이용내역이 없습니다.
+					                </td>
+					            </tr>
+					        </th:block>
+				        </tbody>
+					</table>
+				</div>
 			</div>
-			
 		</section>
 	</main>
 </body>
