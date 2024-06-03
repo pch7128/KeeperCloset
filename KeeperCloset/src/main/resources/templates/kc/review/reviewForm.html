@@ -1,10 +1,173 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http//www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
 <meta charset="UTF-8">
 <title>KeeperCloset 이용후기</title>
+<style>
+	/*	header*/
+	
+		* {
+		margin:0;
+		padding:0;
+	}
+
+	html,body {	
+		height: 100%; 
+		min-width: 1050px; 
+	}
+
+	a{
+		text-decoration: none;
+	}
+	a:visited{
+		color:white;
+	}
+	header{
+		
+		background-color: black;
+	}
+	
+	.headerM{
+		display: flex;
+		flex-direction: row;
+		flex-wrap: nowrap;
+		justify-content: space-between;
+		align-items: center;
+		height: 150px;
+		width: 980px;
+		margin: 0 auto;
+	}
+	
+	.mainlogo{
+		font-size: 28px;
+		font-weight: 500;
+		color: white;
+	}
+	
+	menu>ul{
+		list-style: none;
+		display: flex;
+		flex-direction: row;
+		flex-wrap: nowrap;
+		justify-content: space-between;
+		align-items: center;
+		width: 500px;
+	}
+	
+	menu>ul>li>a{
+		color: white;
+		font-size: 18px;
+	}
+/*	header end  */
+
+	main{
+		margin-top:100px;
+		margin-bottom: 100px;
+	}
+	.reviewSection{
+		margin-left: 12rem;
+		margin-right: 12rem;
+		position: relative;
+	}
+	.formwrap{
+		margin-top: 75px;
+	}
+</style>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"
+	integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
+	crossorigin="anonymous"></script>
+<script>
+	function writeReview(unum){
+		var form = $('#reviewForm')[0];
+	    var data = new FormData(form);
+	    
+		
+			$.ajax({
+				url : '/user/review/addreview/'+unum,
+				type : 'post',
+				enctype: 'multipart/form-data',
+				cache : false,
+				processData: false,   
+	            contentType: false, 
+				data : data,
+				dataType : 'json',
+				success : function(res) {
+					alert(res.ok?"저장 성공":"저장 실패");
+					/* if(res.ok) location.href="/mypage/review"; */
+				},
+				error : function(xhr, status, err) {
+					alert(status + ", " + err);
+				}
+			});
+		
+	}
+</script>
 </head>
 <body>
-
+	<header>
+		<div class="headerM">
+			<div class="mainlogo">
+				<a href="/keep/main">KeeperCloset</a>
+			</div>
+			<menu>
+				<ul>
+					<li>
+						<a href="/rv/keeping">예약하기</a>
+					</li>
+					<li>
+						<a href="">이용후기</a>
+					</li>
+					<li>
+						<a href="">문의사항</a>
+					</li>
+					<li>
+						<th:block sec:authorize="isAnonymous()">
+							<a href="/user/login">로그인</a>
+						</th:block>
+						<th:block sec:authorize="isAuthenticated()">
+							<a href="/user/mypage" sec:authentication="principal.member.id">
+						</th:block>
+					</li>
+				</ul>
+			</menu>
+			<div class="logoutT" sec:authorize="isAuthenticated()">
+					<a href="/logout">로그아웃</a>
+			</div>
+		</div>
+	</header>
+	<main>
+		<section class="reviewSection">
+			<div class="reviewwrap">
+				<div><h1>후기작성</h1></div>
+				<div class="formwrap">
+					<div class="rvdetail" th:each="rv:${m.rvlist}">
+						<div>
+							[[${rv.rv_name}]]님
+						</div>
+						<div class="rvAtt">
+							[[${rv.store.st_name}]]
+						</div>
+						<div>
+							[[${rv.startdate}]] ~ [[${rv.enddate}]]이용
+						</div>
+					</div>
+					<th:block th:each="rv:${m.rvlist}">
+						<form id="reviewForm" method="post">
+							<input type="hidden" name="unum" th:value="${m.unum}">
+							<input type="hidden" name="rvnum" th:value="${rv.rvnum}">
+							
+							<input type="text" name="board_title" id="board_title">
+							<textarea name="board_content" id="board_content" cols="40" rows="8"></textarea>
+							<div>
+								<input type="file" name="files" multiple="multiple" accept="image/*">
+							</div>
+							<button type="button" th:onclick="writeReview([[${m.unum}]])">작성</button>
+						</form>
+					</th:block>
+				</div>
+			</div>
+		</section>
+	</main>
 </body>
 </html>

@@ -53,6 +53,10 @@ public class Member {
 	
 	@OneToMany(mappedBy = "member")
 	private List<Reservation> rvlist;
+	
+
+	@OneToMany(mappedBy = "member")
+	private List<Review> reviewlist;
 
 	@Builder
 	public Member(int unum, String name, String u_pwd, String id, String utel, String uauthority,

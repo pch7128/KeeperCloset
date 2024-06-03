@@ -4,11 +4,9 @@ import java.util.List;
 
 import org.springframework.stereotype.Component;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -21,42 +19,35 @@ import jakarta.persistence.Table;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
-@Component
-@Data
 @RequiredArgsConstructor
+@Data
+@Component
 @Entity
-public class Reservation {
+@Table(name="review_board")
+public class Review {
 	
 	@Id
-	@SequenceGenerator(sequenceName="SEQ_RVNUM", allocationSize=1, name="SEQ_RVNUM")
-	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="SEQ_RVNUM")
-	private int rvnum;
+	@Column(name="r_bnum")
+    @SequenceGenerator(sequenceName="SEQ_rbnum", allocationSize=1, name="SEQ_REVIEW_GEN")
+    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="SEQ_REVIEW_GEN")
+	private int rbnum;
 	
-	private String reservation_no;
+//	private int unum;
 	
-	private java.sql.Date startdate;
+	private String board_title;
 	
-	private java.sql.Date enddate;
+	private java.sql.Date board_posted;
 	
-	private String rv_name;
-	
-//	private int stnum;
-
-	private String boxsize;
-
-	private int rv_cnt;
-	
-	private int rv_price;
+	private String board_content;
 	
 	@ManyToOne
 	@JoinColumn(name="unum")
 	private Member member;
 	
-	@ManyToOne
-	@JoinColumn(name="stnum")
-	private StorageDTO store;	
+	@OneToOne(mappedBy = "review")
+	private Reservation reservation;
 	
-	@OneToOne(mappedBy = "reservation")
-	private Review review;
-	
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "review")
+    private List<BattachDTO> battach;
+
 }

@@ -105,6 +105,11 @@
 		color: black;
 	}
 	
+	.noRv{
+		text-align: center;
+		margin-top: 20px;
+	}
+	
 /*	  토글 내용   */
 
 	.detailwrap{
@@ -121,7 +126,7 @@
 	
 	.detail-row{
     	display: flex;
-		align-items: center;
+		ali0gn-items: center;
     	text-align: center;
 		width: 100%;
     	height: 50px;
@@ -137,6 +142,13 @@
 	.rvDetail{
 		text-align: center;
     	width: 100%;
+	}
+	.revbtn{
+		color: black;
+		border: 1px solid;
+		padding: 5px;
+		border-radius: 5px;
+		font-weight: 500;
 	}
 		
 </style>
@@ -198,7 +210,7 @@
 				
 				<div class="tablewrap">
 					<table class="rvTable">
-						<thead><tr><th>예약번호</th><th>이용시작</th><th>이용종료</th><th>예약자명</th></tr></thead>
+						<thead><tr><th>예약번호</th><th>이용시작</th><th>이용종료</th><th>예약자명</th><th>예약상태</th></tr></thead>
 						<tbody>
 							<th:block th:if="${not #lists.isEmpty(m.rvlist)}" th:each="rv : ${m.rvlist}">
 								<tr class="inq_content" >
@@ -206,9 +218,10 @@
 									<td>[[${rv.startdate}]]</td>
 									<td>[[${rv.enddate}]]</td>
 									<td>[[${rv.rv_name}]]</td>
+									<td><a class="revbtn" th:href="@{'/user/review/write/'+${m.unum}}" style="color: black">후기작성</a></td>
 								</tr>
 								<tr class="board_content">
-									<td colspan="4">
+									<td colspan="5">
 										<div class="detailwrap">
 											<div class="detailborder">
 												<div class="detail-row">
@@ -261,7 +274,7 @@
 					        <th:block th:if="${#lists.isEmpty(m.rvlist)}">
 					            <tr>
 					                <td colspan="4">
-					                    이용내역이 없습니다.
+					                    <div class="noRv">이용내역이 없습니다.</div>
 					                </td>
 					            </tr>
 					        </th:block>
