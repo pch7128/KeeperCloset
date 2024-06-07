@@ -27,12 +27,10 @@ import lombok.RequiredArgsConstructor;
 public class Review {
 	
 	@Id
-	@Column(name="r_bnum")
-    @SequenceGenerator(sequenceName="SEQ_rbnum", allocationSize=1, name="SEQ_REVIEW_GEN")
+    @SequenceGenerator(sequenceName="SEQ_RBNUM", allocationSize=1, name="SEQ_REVIEW_GEN")
     @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="SEQ_REVIEW_GEN")
-	private int rbnum;
-	
-//	private int unum;
+	private int r_bnum;
+	 
 	
 	private String board_title;
 	
@@ -44,7 +42,8 @@ public class Review {
 	@JoinColumn(name="unum")
 	private Member member;
 	
-	@OneToOne(mappedBy = "review")
+	@OneToOne
+	@JoinColumn(name="rvnum")
 	private Reservation reservation;
 	
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "review")

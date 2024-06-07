@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Component;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
@@ -24,6 +25,6 @@ public class StorageDTO {
 	private String st_address;
 	private String st_phone;
 	
-	@OneToMany(mappedBy = "store")
+	@OneToMany(mappedBy = "store", cascade = CascadeType.ALL)
 	private List<Reservation> rvlist;
 }

@@ -191,7 +191,7 @@
 							<a href="/user/login">로그인</a>
 						</th:block>
 						<th:block sec:authorize="isAuthenticated()">
-							<a href="/user/mypage" sec:authentication="principal.member.id">
+							<a href="/user/mypage/checkdetails" sec:authentication="principal.member.id">
 						</th:block>
 					</li>
 				</ul>
@@ -203,7 +203,7 @@
 	</header>
 	<main>
 		<section class="RvCheckSection">
-			<div class="rvlistwrap">
+			<div class="rvlistwrap" style="max-width: 800px; margin: 0 auto;">
 				<div>
 					<h1 style="font-size: 30px">예약내역</h1>
 				</div>
@@ -212,22 +212,22 @@
 					<table class="rvTable">
 						<thead><tr><th>예약번호</th><th>이용시작</th><th>이용종료</th><th>예약자명</th><th>예약상태</th></tr></thead>
 						<tbody>
-							<th:block th:if="${not #lists.isEmpty(m.rvlist)}" th:each="rv : ${m.rvlist}">
+							<th:block th:each="rv : ${m.content}">
 								<tr class="inq_content" >
 									<td>[[${rv.reservation_no}]]</td>
 									<td>[[${rv.startdate}]]</td>
 									<td>[[${rv.enddate}]]</td>
 									<td>[[${rv.rv_name}]]</td>
-									<td><a class="revbtn" th:href="@{'/user/review/write/'+${m.unum}}" style="color: black">후기작성</a></td>
+									<td><a class="revbtn" th:href="@{'/user/review/write/'+${rv.rvnum}}" style="color: black">후기작성</a></td>
 								</tr>
 								<tr class="board_content">
 									<td colspan="5">
 										<div class="detailwrap">
-											<div class="detailborder">
+											<div class="detailborder" >
 												<div class="detail-row">
 													<div class="att">예약번호</div>
 													<div class="rvDetail">
-														[[${m.utel}]]
+														[[${rv.reservation_no}]]
 													</div>
 												</div>
 												<div class="detail-row">
@@ -239,7 +239,7 @@
 												<div class="detail-row">
 													<div class="att">연락처</div>
 													<div class="rvDetail">
-														[[${m.utel}]]
+														[[${rv.member.utel}]]
 													</div>
 												</div>
 												<div class="detail-row">
@@ -271,15 +271,18 @@
 									</td>
 								</tr>
 							</th:block>
-					        <th:block th:if="${#lists.isEmpty(m.rvlist)}">
+					         <th:block th:if="${m.empty}">
 					            <tr>
-					                <td colspan="4">
+					                <td colspan="5">
 					                    <div class="noRv">이용내역이 없습니다.</div>
 					                </td>
 					            </tr>
 					        </th:block>
 				        </tbody>
 					</table>
+				</div>
+				<div class="pages">
+
 				</div>
 			</div>
 		</section>

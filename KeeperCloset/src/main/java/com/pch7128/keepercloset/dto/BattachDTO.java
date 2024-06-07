@@ -27,21 +27,20 @@ public class BattachDTO {
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="SEQ_FNUM_GEN")	
 	private int fnum;
 	
-	private int rbnum;
+//	private int rbnum;
 	
 	private String fname;
 	
 	private String savedfname;
 	
     @ManyToOne
-    @JoinColumn(name = "rbnum")
+    @JoinColumn(name = "r_bnum")
     private Review review;
 
     @Builder
-	public BattachDTO(int fnum, int rbnum, String fname, String savedfname, Review review) {
+	public BattachDTO(int fnum, String fname, String savedfname, Review review) {
 		super();
 		this.fnum = fnum;
-		this.rbnum = rbnum;
 		this.fname = fname;
 		this.savedfname = savedfname;
 		this.review = review;

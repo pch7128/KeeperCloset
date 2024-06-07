@@ -2,6 +2,7 @@ package com.pch7128.keepercloset.svc;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicLong;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,10 +29,13 @@ public class RvSvc {
 	private StoreRepository stre;
 	
 	
-	public Reservation saveRv(int unum, Reservation rv) {
+	public Reservation saveRv(int unum, Reservation rv,int stnum) {
 		
+		Optional<StorageDTO> st=stre.findById(stnum);
+		StorageDTO store=st.get();
 		Member m=mre.findById(unum).get();
 		rv.setMember(m);
+		rv.setStore(store);
 		rv.setReservation_no(reservationNumber());
 		Reservation rvresult=rvre.save(rv);
 		
@@ -54,10 +58,5 @@ public class RvSvc {
 		
 	}
 	
-//	public StorageDTO getStore(int stnum) {
-//		
-//		StorageDTO store=stre.findById(stnum).get();
-//		
-//		return store;
-//	}
+	
 }

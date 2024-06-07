@@ -90,7 +90,7 @@
 						<a href="/user/login">로그인</a>
 					</th:block>
 					<th:block sec:authorize="isAuthenticated()">
-						<a th:href="@{'/user/mypage/checkdetails/'+${unum}}" sec:authentication="principal.member.id">
+						<a href="/user/mypage/checkdetails" sec:authentication="principal.member.id">
 					</th:block>
 				</li>
 			</ul>

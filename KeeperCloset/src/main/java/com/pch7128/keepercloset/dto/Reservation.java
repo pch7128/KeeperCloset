@@ -39,8 +39,7 @@ public class Reservation {
 	private java.sql.Date enddate;
 	
 	private String rv_name;
-	
-//	private int stnum;
+
 
 	private String boxsize;
 
@@ -48,15 +47,15 @@ public class Reservation {
 	
 	private int rv_price;
 	
-	@ManyToOne
+	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="unum")
 	private Member member;
 	
 	@ManyToOne
-	@JoinColumn(name="stnum")
+	@JoinColumn(name="stnum" )
 	private StorageDTO store;	
 	
-	@OneToOne(mappedBy = "reservation")
+	@OneToOne(mappedBy = "reservation", fetch=FetchType.LAZY)
 	private Review review;
 	
 }

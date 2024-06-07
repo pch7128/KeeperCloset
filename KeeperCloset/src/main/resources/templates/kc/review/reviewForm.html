@@ -78,13 +78,13 @@
 	integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
 	crossorigin="anonymous"></script>
 <script>
-	function writeReview(unum){
+	function writeReview(rvnum){
 		var form = $('#reviewForm')[0];
 	    var data = new FormData(form);
 	    
 		
 			$.ajax({
-				url : '/user/review/addreview/'+unum,
+				url : '/user/review/addreview/'+rvnum,
 				type : 'post',
 				enctype: 'multipart/form-data',
 				cache : false,
@@ -141,7 +141,7 @@
 			<div class="reviewwrap">
 				<div><h1>후기작성</h1></div>
 				<div class="formwrap">
-					<div class="rvdetail" th:each="rv:${m.rvlist}">
+					<div class="rvdetail">
 						<div>
 							[[${rv.rv_name}]]님
 						</div>
@@ -152,9 +152,9 @@
 							[[${rv.startdate}]] ~ [[${rv.enddate}]]이용
 						</div>
 					</div>
-					<th:block th:each="rv:${m.rvlist}">
+
 						<form id="reviewForm" method="post">
-							<input type="hidden" name="unum" th:value="${m.unum}">
+							<input type="hidden" name="unum" th:value="${rv.member.unum}">
 							<input type="hidden" name="rvnum" th:value="${rv.rvnum}">
 							
 							<input type="text" name="board_title" id="board_title">
@@ -162,9 +162,9 @@
 							<div>
 								<input type="file" name="files" multiple="multiple" accept="image/*">
 							</div>
-							<button type="button" th:onclick="writeReview([[${m.unum}]])">작성</button>
+							<button type="button" th:onclick="writeReview([[${rv.rvnum}]])">작성</button>
 						</form>
-					</th:block>
+
 				</div>
 			</div>
 		</section>
