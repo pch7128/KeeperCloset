@@ -4,6 +4,7 @@ import java.util.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
@@ -72,18 +73,23 @@ public class UserController {
 	}
 
 	@GetMapping("/mypage/checkdetails")
-	public String rvCheck(@PageableDefault(page=0, size=5)Pageable pg,
+	public String rvCheck(@PageableDefault(page = 0, size = 5) Pageable pg,
 			Model m, @AuthenticationPrincipal PrincipalDetails principal) {
 	
-		int unum=principal.getMember().getUnum();
-		Page<MemberDTO> mdto=mSvc.paging(unum,pg);
 		
-		int nowP=mdto.getNumber()+1;
-		int totalP=mdto.getTotalPages();
+		int unum=principal.getMember().getUnum();
+		
+		Page<RvResponseDTO> rvdto=mSvc.rvpaging(unum,pg);
+		
+		int nowP=rvdto.getNumber()+1;
+		int totalP=rvdto.getTotalPages();
 		int startP = Math.max(nowP - 2, 1);
 		int endP = Math.min(startP + 4, totalP);
 		startP = Math.max(1, endP - 4);
-		m.addAttribute("m", mdto);
+		System.out.println("현재: "+nowP+"총페이지 수:"+totalP
+				+"시작페이지: "+startP+"끝페이지 :"+endP);
+		
+		m.addAttribute("rv", rvdto);
 		m.addAttribute("startP", startP);
 		m.addAttribute("endP", endP);
 		m.addAttribute("nowP", nowP);

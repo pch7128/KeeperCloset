@@ -83,7 +83,7 @@ public class MemberSvc implements UserDetailsService{
 		return rv.get();
 	}
 
-	public Page<MemberDTO> paging(int unum,Pageable pageable){
+	public Page<RvResponseDTO> paging(int unum,Pageable pageable){
 		
 		 //member를 찾아오는 jpal문
 		 String jpql = "SELECT m FROM Member m JOIN FETCH m.rvlist r WHERE m.unum = :unum";
@@ -94,26 +94,39 @@ public class MemberSvc implements UserDetailsService{
 		
 		 //한명의 회원이 예약한 리스트를 페이징
 		 List<Reservation> rvlist=member.getRvlist();
+		 System.out.println(rvlist.size());
 		 List<Reservation> pgRvlist=rvlist.stream()
 		 		.skip(pageable.getOffset())
 		 		.limit(pageable.getPageSize())
 		 		.collect(Collectors.toList());
 		 
-		 List<MemberDTO> mDTO = pgRvlist.stream()
-				 						.map(reservation ->{
-				 							MemberDTO dto = new MemberDTO();
-				 							dto.setUnum(member.getUnum());
-				 							dto.setName(member.getName());
-				 							dto.setUtel(member.getUtel());
-				 							dto.setRvlist(member.getRvlist());
-				 							dto.setReviewlist(member.getReviewlist());
-				 							dto.setStore(reservation.getStore());
-				 							return dto;
-				 						}).collect(Collectors.toList());
+		 List<RvResponseDTO> rvDTO = pgRvlist.stream()
+				 .map(reservation -> new RvResponseDTO(reservation))
+                 								  .collect(Collectors.toList());
 		 
-		 
-		 
-		 return new PageImpl<>(mDTO,pageable,rvlist.size());
+		 return new PageImpl<>(rvDTO,pageable,rvlist.size());
+	}
+	
+	public Page<RvResponseDTO> rvpaging(int unum,Pageable pageable){
+		
+		String jpql="SELECT r FROM Reservation r WHERE r.member.unum = :unum";
+		List<Reservation> rvlist = entityManager.createQuery(jpql,Reservation.class)
+				.setParameter("unum", unum)
+				.getResultList();
+
+        // 전체 예약 수
+        String countJpql = "SELECT COUNT(r) FROM Reservation r WHERE r.member.unum = :unum";
+        long total = entityManager.createQuery(countJpql, Long.class)
+                .setParameter("unum", unum)
+                .getSingleResult();
+        System.out.println(total);
+		 List<RvResponseDTO> rvDTO = rvlist.stream()
+				 .map(reservation -> new RvResponseDTO(reservation))
+				 .skip(pageable.getOffset())
+				 .limit(pageable.getPageSize())
+                 .collect(Collectors.toList());
+		
+        return new PageImpl<>(rvDTO, pageable, total);
 	}
 	
 }

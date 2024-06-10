@@ -126,7 +126,7 @@
 	
 	.detail-row{
     	display: flex;
-		ali0gn-items: center;
+		align-items: center;
     	text-align: center;
 		width: 100%;
     	height: 50px;
@@ -150,7 +150,44 @@
 		border-radius: 5px;
 		font-weight: 500;
 	}
-		
+	
+	/* page */
+	
+	.pages ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 20px 0;
+    text-align: center;
+	}
+	
+	.pages ul li {
+	    display: inline-block;
+	    margin: 0 5px;
+	}
+	
+	.pages ul li a {
+	    display: inline-block;
+	    width: 30px; /* 원하는 크기로 조절 */
+	    height: 30px; /* 원하는 크기로 조절 */
+	    line-height: 30px; /* 버튼 내부의 텍스트를 중앙에 정렬 */
+	    text-align: center;
+	    border-radius: 50%; /* 원 모양으로 만들기 */
+	    background-color: #f0f0f0; /* 배경색 설정 */
+	    text-decoration: none; /* 링크 밑줄 제거 */
+	    color: #333; /* 텍스트 색상 */
+	}
+	
+	.pages ul li.disable a {
+	    pointer-events: none; /* 비활성 상태일 때 클릭 방지 */
+	    background-color: #ccc; /* 비활성 상태일 때 배경색 변경 */
+	}
+	
+	.pages ul li.active a {
+	    font-weight: bold; /* 현재 페이지 강조 */
+	    background-color: black; /* 현재 페이지 배경색 변경 */
+	    color: #fff; /* 현재 페이지 텍스트 색상 변경 */
+	}
+	
 </style>
 <script 
 	src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous">
@@ -212,7 +249,7 @@
 					<table class="rvTable">
 						<thead><tr><th>예약번호</th><th>이용시작</th><th>이용종료</th><th>예약자명</th><th>예약상태</th></tr></thead>
 						<tbody>
-							<th:block th:each="rv : ${m.content}">
+							<th:block th:each="rv : ${rv}">
 								<tr class="inq_content" >
 									<td>[[${rv.reservation_no}]]</td>
 									<td>[[${rv.startdate}]]</td>
@@ -271,7 +308,7 @@
 									</td>
 								</tr>
 							</th:block>
-					         <th:block th:if="${m.empty}">
+					         <th:block th:if="${rv.empty}">
 					            <tr>
 					                <td colspan="5">
 					                    <div class="noRv">이용내역이 없습니다.</div>
@@ -281,9 +318,21 @@
 				        </tbody>
 					</table>
 				</div>
-				<div class="pages">
-
-				</div>
+					<div class="pages">
+					    <ul>
+					        <li th:class="${nowP == 1}? 'disable'">
+					            <a th:if="${nowP > 1}" th:href="@{/user/mypage/checkdetails(page=${nowP - 1})}">&laquo;</a>
+					        </li>
+						        <th:block th:each="pageNum : ${#numbers.sequence(startP, endP)}">
+						            <li th:class="${pageNum == nowP}? 'active'">
+						                <a th:href="@{/user/mypage/checkdetails(page=${pageNum-1})}" th:text="${pageNum}"></a>
+						            </li>
+						        </th:block>
+					        <li th:class="${nowP == totalP}? 'disable'">
+					            <a th:if="${nowP < totalP}" th:href="@{/user/mypage/checkdetails(page=${nowP + 1})}">&raquo;</a>
+					        </li>
+					    </ul>
+					</div>
 			</div>
 		</section>
 	</main>
