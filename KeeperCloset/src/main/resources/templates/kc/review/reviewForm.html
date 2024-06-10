@@ -4,6 +4,7 @@
 <head>
 <meta charset="UTF-8">
 <title>KeeperCloset 이용후기</title>
+<script src="https://kit.fontawesome.com/309845435e.js" crossorigin="anonymous"></script>
 <style>
 	/*	header*/
 	
@@ -60,23 +61,87 @@
 		font-size: 18px;
 	}
 /*	header end  */
-
+	
 	main{
 		margin-top:100px;
 		margin-bottom: 100px;
+		
 	}
 	.reviewSection{
 		margin-left: 12rem;
 		margin-right: 12rem;
-		position: relative;
+		position: relative;	
 	}
-	.formwrap{
+	.reviewwrap{
+		width: 650px;
+    	margin: 0 auto;
+	}
+	.divwrap{
 		margin-top: 75px;
+	}
+	.rformwrap{
+		margin-top: 50px;
+	}
+	
+	
+	#reviewForm{
+		display: flex;
+    	flex-direction: column;
+	}
+	.inputWrap{
+		width: 100%;
+		border: 1px solid black;
+		border-radius: 4px;
+		margin-bottom: 20px;
+		height: 42px;
+		padding-left: 5px;
+		display: flex;
+		align-items: center;
+	}
+	.reviewInput{
+		border: none;
+		font-size: 18px;
+		height: 30px;
+		width: 600px;
+	}
+	.ttWrap{
+		border: 1px solid black;
+		width: 100%;
+		height: 250px;
+		padding-left: 5px;
+		padding-top: 5px;
+		border-radius: 4px;
+	}
+	#board_content{
+		height: 100%;
+		width: 650px;
+		font-size: 14px;
+		resize: none;
+		border: none;
+	}
+	input,textarea:focus{
+		outline: none !important;
+	}
+	i{
+		background-color: gainsboro;
+		font-size:35px;
+	}
+	i.fa-sharp.fa-thin.fa-plus{
+		padding-left: 14px;
+	    padding-right: 14px;
+	    padding-top: 9px;
+	    padding-bottom: 5px;
+	    cursor: pointer;
+	}
+	.fa-plus:before {
+		font-style: normal;
+		
 	}
 </style>
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"
 	integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
 	crossorigin="anonymous"></script>
+
 <script>
 	function writeReview(rvnum){
 		var form = $('#reviewForm')[0];
@@ -101,6 +166,19 @@
 				}
 			});
 		
+	}
+	
+	function getImage(input){
+		
+		if(input.files&&input.files[0]){
+			var reader = new FileReader();
+			reader.onload = function(e){
+				document.getElementById('preview').src=e.target.result;
+			};
+			reader.readAsDataURL(input.files[0]);
+		} else {
+			document.getElementById('preview').src="";
+		}
 	}
 </script>
 </head>
@@ -140,10 +218,11 @@
 		<section class="reviewSection">
 			<div class="reviewwrap">
 				<div><h1>후기작성</h1></div>
-				<div class="formwrap">
+				<div class="divwrap">
 					<div class="rvdetail">
 						<div>
 							[[${rv.rv_name}]]님
+							
 						</div>
 						<div class="rvAtt">
 							[[${rv.store.st_name}]]
@@ -152,19 +231,27 @@
 							[[${rv.startdate}]] ~ [[${rv.enddate}]]이용
 						</div>
 					</div>
-
+					<div class="rformwrap">
 						<form id="reviewForm" method="post">
 							<input type="hidden" name="unum" th:value="${rv.member.unum}">
 							<input type="hidden" name="rvnum" th:value="${rv.rvnum}">
-							
-							<input type="text" name="board_title" id="board_title">
-							<textarea name="board_content" id="board_content" cols="40" rows="8"></textarea>
-							<div>
-								<input type="file" name="files" multiple="multiple" accept="image/*">
+							<div class="inputWrap">
+								<input class="reviewInput" type="text" name="board_title" id="board_title" >
+							</div>
+							<div class="ttWrap">
+								<textarea  name="board_content" id="board_content" cols="40" rows="8"></textarea>
+							</div>
+							<div style="margin-top:10px">
+								<label for="files"><i class="fa-sharp fa-thin fa-plus"></i></label>
+								<input type="file" name="files" id="files" multiple="multiple" accept="image/*"
+									style="display:none; visibility:none;" onchange="getImage(this);">
+							</div>
+							<div id="display-image">
+								<img id="preview"/>
 							</div>
 							<button type="button" th:onclick="writeReview([[${rv.rvnum}]])">작성</button>
 						</form>
-
+					</div>
 				</div>
 			</div>
 		</section>
