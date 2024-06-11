@@ -124,4 +124,10 @@ public class UserController {
 		
 		return map;
 	}
+	
+	@GetMapping("/review/result")
+	public String getResultPage() {
+		return "kc/review/reviewResult";
+	}
+	
 }

@@ -3,6 +3,8 @@ package com.pch7128.keepercloset.svc;
 
 import java.io.File;
 import java.io.IOException;
+import java.sql.Date;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -40,6 +42,8 @@ public class BoardSvc {
 		review.setMember(m);
 		List<BattachDTO> flist=battachList(files,review);
 		review.setBattach(flist);
+		LocalDate currentDate = LocalDate.now();
+		review.setBoard_posted(Date.valueOf(currentDate));
 		Review r=reviewre.save(review);
 		
 	}
@@ -68,9 +72,8 @@ public class BoardSvc {
 		return flist;
 	}
 	
-	public Page<ReviewResponseDTO> paging(Pageable pageable){
-		int page=pageable.getPageNumber()-1;
-		int pagelimit=5;
+	public Page<ReviewResponseDTO> reviewPaging(Pageable pageable){
+		
 		
 		return null;
 	}

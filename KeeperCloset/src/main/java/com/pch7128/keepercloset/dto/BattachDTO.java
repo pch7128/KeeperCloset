@@ -27,7 +27,6 @@ public class BattachDTO {
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="SEQ_FNUM_GEN")	
 	private int fnum;
 	
-//	private int rbnum;
 	
 	private String fname;
 	

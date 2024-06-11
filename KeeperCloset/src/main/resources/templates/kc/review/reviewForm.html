@@ -187,7 +187,7 @@
 				dataType : 'json',
 				success : function(res) {
 					alert(res.ok?"저장 성공":"저장 실패");
-					/* if(res.ok) location.href="/mypage/review"; */
+					if(res.ok) location.href="/user/review/result";
 				},
 				error : function(xhr, status, err) {
 					alert(status + ", " + err);
