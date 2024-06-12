@@ -31,12 +31,14 @@ public class Review {
     @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="SEQ_REVIEW_GEN")
 	private int r_bnum;
 	 
-	
 	private String board_title;
 	
 	private java.sql.Date board_posted;
 	
 	private String board_content;
+	
+	@Column(name="rbhits")
+	private int hits;
 	
 	@ManyToOne
 	@JoinColumn(name="unum")
@@ -47,6 +49,6 @@ public class Review {
 	private Reservation reservation;
 	
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "review")
-    private List<BattachDTO> battach;
+    private List<Battach> battach;
 
 }

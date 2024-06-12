@@ -8,14 +8,16 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.pch7128.keepercloset.dto.Battach;
 import com.pch7128.keepercloset.dto.BattachDTO;
 import com.pch7128.keepercloset.dto.Member;
 import com.pch7128.keepercloset.dto.Review;
@@ -40,7 +42,7 @@ public class BoardSvc {
 	@Transactional
 	public void saveReview(MultipartFile[] files,Review review, Member m) throws Exception{
 		review.setMember(m);
-		List<BattachDTO> flist=battachList(files,review);
+		List<Battach> flist=battachList(files,review);
 		review.setBattach(flist);
 		LocalDate currentDate = LocalDate.now();
 		review.setBoard_posted(Date.valueOf(currentDate));
@@ -48,14 +50,14 @@ public class BoardSvc {
 		
 	}
 
-	public List<BattachDTO> battachList(MultipartFile[] files,Review review) throws IllegalStateException,IOException{
+	public List<Battach> battachList(MultipartFile[] files,Review review) throws IllegalStateException,IOException{
 		
-		List<BattachDTO> flist = new ArrayList<BattachDTO>();
+		List<Battach> flist = new ArrayList<Battach>();
 		
 		for(MultipartFile mf : files) {
 			if(mf.isEmpty()) break;
 			
-			BattachDTO bAtt = new BattachDTO();
+			Battach bAtt = new Battach();
 			UUID u=UUID.randomUUID();
 			String fname=mf.getOriginalFilename();
 			String savedfname=u.toString()+"_"+fname;
@@ -74,7 +76,18 @@ public class BoardSvc {
 	
 	public Page<ReviewResponseDTO> reviewPaging(Pageable pageable){
 		
+		Page<Review> reviews=reviewre.findWithBattach(pageable);
 		
-		return null;
+		List<ReviewResponseDTO> reviewDTO = reviews.stream()
+				.map(review -> {
+					ReviewResponseDTO dto = new ReviewResponseDTO(review);
+					List<BattachDTO> bttDTO = review.getBattach().stream()
+							.map(BattachDTO::new)
+							.collect(Collectors.toList());
+					dto.setBattach(bttDTO);
+					return dto;
+				}).collect(Collectors.toList());
+		
+		return new PageImpl<>(reviewDTO,pageable,reviews.getTotalElements());
 	}
 }

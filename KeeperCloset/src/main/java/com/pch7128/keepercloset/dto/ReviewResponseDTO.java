@@ -1,6 +1,7 @@
 package com.pch7128.keepercloset.dto;
 
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Component;
@@ -17,6 +18,8 @@ public class ReviewResponseDTO {
 	private String board_title;
 	private java.sql.Date board_posted;
 	private String board_content;
+	private int hits;
+	private String store;
 	private Member member;
 	private Reservation reservation;
 	private List<BattachDTO> battach;
@@ -27,9 +30,11 @@ public class ReviewResponseDTO {
 		this.board_title = entity.getBoard_title();
 		this.board_posted = entity.getBoard_posted();
 		this.board_content = entity.getBoard_content();
+		this.hits=entity.getHits();
+		this.store=entity.getReservation().getStore().getSt_name();
 		this.member = entity.getMember();
 		this.reservation = entity.getReservation();
-		this.battach = entity.getBattach();
+		this.battach = new ArrayList<>();
 	}
 	
 	
