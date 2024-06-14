@@ -7,6 +7,7 @@ import java.sql.Date;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -25,6 +26,7 @@ import com.pch7128.keepercloset.repository.BattachRepository;
 import com.pch7128.keepercloset.repository.ReviewRepository;
 import com.pch7128.keepercloset.repository.RvRepository;
 import com.pch7128.keepercloset.dto.ReviewResponseDTO;
+import com.pch7128.keepercloset.exception.ResourceNotFoundException;
 
 import jakarta.transaction.Transactional;
 
@@ -36,7 +38,7 @@ public class BoardSvc {
 	@Autowired
 	private BattachRepository bAttre;
 	@Autowired
-	private static final String upPath="/Users/eeeun/Desktop/git/KeeperCloset/KeeperCloset/src/main/resources/static/images";
+	private static final String RUpPath="/Users/eeeun/Desktop/git/KeeperCloset/KeeperCloset/src/main/resources/static/images/review";
 	
 	
 	@Transactional
@@ -67,11 +69,79 @@ public class BoardSvc {
 					.review(review)
 					.build();
 			flist.add(bAtt);
-			mf.transferTo(new File(upPath,bAtt.getSavedfname()));
+			mf.transferTo(new File(RUpPath,bAtt.getSavedfname()));
 			
 		}
 		bAttre.saveAll(flist);
 		return flist;
+	}
+	
+	
+	public ReviewResponseDTO getReview(int r_bnum) {
+		
+		Review review=reviewre.findById(r_bnum).orElseThrow();
+		List<BattachDTO> bdto=getImg(r_bnum);
+		review.setHits(review.getHits()+1);
+		reviewre.save(review);
+		ReviewResponseDTO rdto=new ReviewResponseDTO(review);
+		rdto.setBattach(bdto);
+		return rdto;
+	}
+	
+	public int getReviewNum(int rvnum) {
+		
+		Review r=reviewre.findByRbNum(rvnum);
+		if(r != null) {
+			return r.getR_bnum();
+		}
+		throw new ResourceNotFoundException("Review not found with rvnum " + rvnum);
+		
+	}
+	
+	@Transactional
+	public boolean deleteReview(int r_bnum) {
+		Review r=reviewre.findById(r_bnum).orElseThrow();
+		if(r.getBattach()!=null && !r.getBattach().isEmpty()) {
+			boolean delefileImg=deleteImg(r_bnum);
+			if(delefileImg) {
+				reviewre.deleteById(r_bnum);
+			}
+		}
+		
+		reviewre.deleteById(r_bnum);
+		return true;
+	}
+	
+	public List<BattachDTO> getImg(int r_bnum) {
+		
+		List<Battach> b=bAttre.getBattach(r_bnum);
+		List<BattachDTO> bdto=b.stream()
+				.map(battach -> new BattachDTO(battach))
+				.collect(Collectors.toList());
+		
+		return bdto;
+	}
+	
+	public boolean deleteImg(int r_bnum) {
+		
+		List<Battach> battList=bAttre.getBattach(r_bnum);
+		
+		for(Battach b :battList) {
+			bAttre.delete(b);
+			deleteFile(b);
+			return true;
+		}
+		return false;
+	}
+	
+	public boolean deleteFile(Battach b) {
+		
+		File f = new File(RUpPath+"/"+b.getSavedfname());
+		System.out.println(RUpPath+b.getSavedfname());
+		if(f.exists()) {
+			return f.delete();
+		}
+		return false;
 	}
 	
 	public Page<ReviewResponseDTO> reviewPaging(Pageable pageable){

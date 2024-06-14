@@ -31,7 +31,7 @@ public class Review {
     @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="SEQ_REVIEW_GEN")
 	private int r_bnum;
 	 
-	private String board_title;
+//	private String board_title;
 	
 	private java.sql.Date board_posted;
 	

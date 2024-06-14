@@ -145,6 +145,14 @@
 	}
 	.revbtn{
 		color: black;
+		border: 1px solid black;
+		padding: 5px;
+		border-radius: 5px;
+		font-weight: 500;
+	}
+	.cbtn{
+		color: white;
+		background-color:black;
 		border: 1px solid;
 		padding: 5px;
 		border-radius: 5px;
@@ -255,7 +263,14 @@
 									<td>[[${rv.startdate}]]</td>
 									<td>[[${rv.enddate}]]</td>
 									<td>[[${rv.rv_name}]]</td>
-									<td><a class="revbtn" th:href="@{'/user/review/write/'+${rv.rvnum}}" style="color: black">후기작성</a></td>
+									<td>
+										<th:block th:if="${rv.review == null}">
+											<a class="cbtn" th:href="@{'/user/review/write/'+${rv.rvnum}}">후기작성</a>
+										</th:block>
+										<th:block th:if="${rv.review !=null}">
+											<a class="revbtn" th:href="@{'/review/review-detail/'+${rv.review.r_bnum}}" style="color:black;">후기보기</a>
+										</th:block>
+									</td>
 								</tr>
 								<tr class="board_content">
 									<td colspan="5">

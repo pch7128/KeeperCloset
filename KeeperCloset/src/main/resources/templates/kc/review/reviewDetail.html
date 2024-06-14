@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http//www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
 <meta charset="UTF-8">
 <title>KeeperCloset</title>
@@ -59,7 +60,93 @@
 		font-size: 18px;
 	}
 	/*	header end  */
+	
+	main{
+		margin-top:100px;
+		margin-bottom: 100px;
+	}
+	.rDetailSection{
+		margin-left: 12rem;
+		margin-right: 12rem;
+		position: relative;
+	}
+	.rDetailWrap{
+		max-width: 600px;
+		margin: 0 auto;
+	}
+	
+	.slash{
+		border-bottom: 1px solid rgb(217, 217, 217);
+		margin-top: 20px;
+		margin-bottom: 20px;
+	}
+	.reservation_d{
+		margin-top: 65px;
+	}
+	.reviewer{
+		margin-bottom: 10px;
+		font-weight: 900;
+		font-size: 17px;
+	}
+	.rv_content{
+		font-size: 15px;
+    	font-weight: 300;
+		word-spacing: -2px;
+	}
+	.notContent{
+		display: flex;
+		justify-content: flex-end;
+	}
+	.notContent p{
+		font-size: 13px;
+		color: gray;
+	}
+	.editDelelte{
+		margin-top:5px;
+		display: flex;
+    	justify-content: flex-end;
+	}
+	.editDelelte a{
+		color: black;
+		font-size: 14px;
+	}
+	.sl{
+		width: 1px;
+		height: 13px;
+		margin: 0px 12px;
+		background-color: rgb(217, 217, 217);
+	}
+	.delebtn{
+		cursor: pointer;
+	}
+	.cont{
+		margin-top: 20px;
+	}
+	.rvimg{
+		width: 40%;
+	}
 </style>
+<script 
+	src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous">
+</script>
+<script>
+	function deleteReview(r_bnum){
+		
+		$.ajax({
+			url : '/review/delete/'+r_bnum,
+			type : 'post',
+			cache : false,
+			dataType : 'json',
+			success : function(res) {
+				alert(res.deleted ? "삭제 성공":"삭제 실패");
+				if(res.deleted) location.href="/user/mypage/checkdetails";
+			},
+			error : function(xhr, status, err) {
+				alert(status + ", " + err);
+			}
+		});
+	}
+</script>
 </head>
 <body>
 	<header>
@@ -94,8 +181,49 @@
 		</div>
 	</header>
 	<main>
-		<section>
-		
+		<section class="rDetailSection">
+			<div class="rDetailWrap">
+				<div><h1 style="font-size: 30px;">이용후기</h1></div>
+				
+				<div class="boardD" th:each="r:${r}">
+				
+					<div class="reservation_d">
+						
+							<div style="margin-top: 13px;">
+								<p class="reviewer">[[${r.reservation.rv_name}]] 님</p>
+								<p class="rv_content">
+									<strong>[[${r.store}]]</strong><br>
+								<span style="font-style: italic; margin-right: 3px;">[[${r.reservation.startdate}]] ~ [[${r.reservation.enddate}]]</span>
+								이용<br>
+								</p>
+							</div>
+						
+					</div>
+					<div class="slash"></div>
+					<div class="contentWrap">
+						<div class="notContent">
+							<p style="margin-right: 5px">조회수 [[${r.hits}]]</p>
+							<p>[[${r.board_posted}]]</p>
+						</div>
+						<th:block th:if="${r.member.unum == unum}">
+							<div class="editDelelte">
+								<a th:href="@{'/review/review-editform/'+${r.r_bnum}}">수정</a>
+								<span class="sl"></span>
+								<span class="delebtn" th:onclick="deleteReview([[${r.r_bnum}]])">삭제</span>
+							</div>
+						</th:block>
+						<div class="cont">
+							<th:block th:if="${not #lists.isEmpty(r.battach)}">
+								<div th:each="a:${r.battach}">
+									<img class="rvimg" th:src="@{'/images/review/' + ${a.savedfname}}" alt="Image">
+								</div>
+							</th:block>
+							<p>[[${r.board_content}]]</p>
+						</div>
+					</div>
+			
+				</div>
+			</div>
 		</section>
 	</main>
 </body>

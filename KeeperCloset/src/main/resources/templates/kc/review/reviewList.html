@@ -90,6 +90,11 @@
 		font-size: 16px;
 		font-weight: 400px;
 	}
+	.reviewC{
+		white-space:nowrap;
+		overflow : hidden;
+		text-overflow:ellipsis;
+	}
 	.rv_content{
 		height: 55px;
 		text-align: center;
@@ -183,16 +188,16 @@
 				<div><h1 style="font-size: 30px;">이용후기</h1></div>
 				<div class="tableWrap">
 					<table class="reviewtb">
-						<thead><tr><th>번호</th><th>제목</th><th>작성자</th><th>이용지점</th><th>조회수</th></tr></thead>
+						<thead><tr><th>번호</th><th>후기<th>작성자</th><th>이용지점</th><th>조회수</th></tr></thead>
 						<tbody>
 							<th:block th:each="r:${r}">
 							<tr class="rv_content" th:onclick="'location.href=\'/review/review-detail/'+${r.r_bnum}+'\';'">
 								<td>
 									[[${r.r_bnum}]]
 								</td>
-								<td>
-									[[${r.board_title}]]
-								</td>
+								<td class="reviewC">
+									[[${r.board_content}]]
+								</td> 
 								<td>
 									[[${r.reservation.rv_name}]]
 								</td>

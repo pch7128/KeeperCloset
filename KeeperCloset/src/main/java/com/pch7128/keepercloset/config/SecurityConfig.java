@@ -33,7 +33,7 @@ public class SecurityConfig {
 	
 	@Bean
 	WebSecurityCustomizer webSecurityCustomizer() {
-		return (webSecurity) -> webSecurity.ignoring().requestMatchers("/resources/**", "/ignore2");
+		return (webSecurity) -> webSecurity.ignoring().requestMatchers("/resources/**","/static/**", "/images/**","/ignore2");
 	}
 	
 	@Bean 
@@ -41,7 +41,8 @@ public class SecurityConfig {
 		
 
 		http.authorizeHttpRequests(authz -> authz
-				.requestMatchers("/", "/keep", "/user/signup", "/keep/main","/keep/denied","/logout").permitAll()
+				.requestMatchers("/", "/keep", "/user/signup", "/keep/main","/review/list",
+						"/review/review-detail/**","/keep/denied","/logout", "/static/**", "/images/**").permitAll()
 				.requestMatchers("/keep/main").hasAnyRole("USER", "ADMIN")
 				.requestMatchers("/keep/admin","/keep/admin/**").hasAnyRole("ADMIN")
 				.anyRequest().permitAll())

@@ -125,8 +125,11 @@ public class UserController {
 		return map;
 	}
 	
-	@GetMapping("/review/result")
-	public String getResultPage() {
+	@GetMapping("/review/result/{rvnum}")
+	public String getResultPage(@PathVariable("rvnum") int rvnum, Model m) {
+		int r_bnum=bSvc.getReviewNum(rvnum);
+		System.out.println("리뷰번호 :"+r_bnum);
+		m.addAttribute("r_bnum", r_bnum);	
 		return "kc/review/reviewResult";
 	}
 	

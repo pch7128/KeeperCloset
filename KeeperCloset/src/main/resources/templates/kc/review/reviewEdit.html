@@ -84,7 +84,7 @@
 	}
 	
 	
-	#reviewForm{
+	#editForm{
 		display: flex;
     	flex-direction: column;
 	}
@@ -145,6 +145,7 @@
 	.preview{
 		width:20%;
 		margin-right: 5px;
+		cursor: pointer;
 	}
 	.btnWrap{
 		display: flex;
@@ -165,19 +166,19 @@
 		background-color: black;
     	color: white;
 	}
+
 </style>
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"
 	integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
 	crossorigin="anonymous"></script>
-
-<script>
-	function writeReview(rvnum){
-		var form = $('#reviewForm')[0];
+<script type="text/javascript">
+	function editReview(r_bnum){
+		var form = $('#editForm')[0];
 	    var data = new FormData(form);
 	    
 		
 			$.ajax({
-				url : '/user/review/addreview/'+rvnum,
+				url : '/review/review-editform/'+r_bnum,
 				type : 'post',
 				enctype: 'multipart/form-data',
 				cache : false,
@@ -186,8 +187,8 @@
 				data : data,
 				dataType : 'json',
 				success : function(res) {
-					alert(res.ok?"등록 성공":"등록 실패");
-					if(res.ok) location.href="/user/review/result/"+rvnum;
+					alert(res.ok?"수정 성공":"수정 실패");
+					/* if(res.ok) location.href="/user/review/result/"+rvnum; */
 				},
 				error : function(xhr, status, err) {
 					alert(status + ", " + err);
@@ -195,10 +196,8 @@
 			});
 		
 	}
-	
-	function getImage(input){
-		
-		var max = 3;
+    function editImg(input) {
+    	var max = 3;
 		var cur=input.files.length;
 		
 		if(cur>max){
@@ -226,11 +225,13 @@
 				})
 			}
 		}
-	}
-	
-   function deleteImg(img) {
+    }
+    
+    
+    function deleteImg(img) {
         img.parentNode.removeChild(img); // 클릭된 이미지를 부모 요소에서 삭제
     }
+    
 </script>
 </head>
 <body>
@@ -272,39 +273,46 @@
 				<div class="divwrap">
 					<div class="rvdetail">
 						<div>
-							[[${rv.rv_name}]]님
+							[[${r.reservation.rv_name}]]님
 							
 						</div>
 						<div class="rvAtt">
-							[[${rv.store.st_name}]]
+							[[${r.store}]]
 						</div>
 						<div>
-							[[${rv.startdate}]] ~ [[${rv.enddate}]]이용
+							[[${r.reservation.startdate}]] ~ [[${r.reservation.enddate}]]이용
 						</div>
 					</div>
 					<div class="rformwrap">
-						<form id="reviewForm" method="post">
-							<input type="hidden" name="unum" th:value="${rv.member.unum}">
-							<input type="hidden" name="rvnum" th:value="${rv.rvnum}">
+						<form id="editForm" method="post">
+							<input type="hidden" name="unum" th:value="${r.member.unum}">
+							<input type="hidden" name="rvnum" th:value="${r.reservation.rvnum}">
 							<!-- <div class="inputWrap">
 								<input class="reviewInput" type="text" name="board_title" id="board_title" >
 							</div> -->
 							<div class="ttWrap">
-								<textarea  name="board_content" id="board_content" cols="40" rows="8"></textarea>
+								<textarea  name="board_content" id="board_content" cols="40" rows="8">[[${r.board_content}]]</textarea>
 							</div>
 							<div style="margin-top:10px">
 								<label for="files"><i class="fa-sharp fa-thin fa-plus"></i></label>
 								<input type="file" name="files" id="files" multiple="multiple" accept="image/*"
-									style="display:none; visibility:none;" onchange="getImage(this);">
+									style="display:none; visibility:none;" onchange="editImg(this)">
 							</div>
 							<div id="display-image">
+								<th:block th:if="${not #lists.isEmpty(r.battach)}">
+									<th:block th:each="a, status :${r.battach}">
+										
+											<img class="preview" th:src="@{'/images/review/'+${a.savedfname}}" th:onclick="'deleteImg(\'' + ${status.index} + '\')'">
+									
+									</th:block>
+								</th:block>
 							</div>
 							<div class="btnWrap">
 								<div class="btnstyle">
-									<button id="reList" type="button" onclick="location.href='/user/mypage/checkdetails'">취소</button>
+									<button id="reList" type="button" th:onclick="location.href='/review/review-detail/[[${r.r_bnum}]]'">취소</button>
 								</div>
 								<div class="btnstyle">
-									<button id="dobtn" type="button" th:onclick="writeReview([[${rv.rvnum}]])">등록</button>
+									<button id="dobtn" type="button" th:onclick="editReview([[${r.r_bnum}]])">수정</button>
 								</div>
 							</div>
 						</form>
@@ -313,5 +321,6 @@
 			</div>
 		</section>
 	</main>
+
 </body>
 </html>
