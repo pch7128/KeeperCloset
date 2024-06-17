@@ -173,6 +173,7 @@
 	crossorigin="anonymous"></script>
 <script type="text/javascript">
 	function editReview(r_bnum){
+		
 		var form = $('#editForm')[0];
 	    var data = new FormData(form);
 	    
@@ -188,7 +189,7 @@
 				dataType : 'json',
 				success : function(res) {
 					alert(res.ok?"수정 성공":"수정 실패");
-					/* if(res.ok) location.href="/user/review/result/"+rvnum; */
+					if(res.ok) location.href="/review/review-detail/"+r_bnum;
 				},
 				error : function(xhr, status, err) {
 					alert(status + ", " + err);
@@ -285,11 +286,9 @@
 					</div>
 					<div class="rformwrap">
 						<form id="editForm" method="post">
-							<input type="hidden" name="unum" th:value="${r.member.unum}">
+							<input type="hidden" name="r_bnum" th:value="${r.r_bnum}">
 							<input type="hidden" name="rvnum" th:value="${r.reservation.rvnum}">
-							<!-- <div class="inputWrap">
-								<input class="reviewInput" type="text" name="board_title" id="board_title" >
-							</div> -->
+		
 							<div class="ttWrap">
 								<textarea  name="board_content" id="board_content" cols="40" rows="8">[[${r.board_content}]]</textarea>
 							</div>

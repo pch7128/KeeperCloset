@@ -133,4 +133,11 @@ public class UserController {
 		return "kc/review/reviewResult";
 	}
 	
+	@GetMapping("/mypage/inquiry")
+	public String inquiryPage(@AuthenticationPrincipal PrincipalDetails principal) {
+		
+		
+		return "kc/mypage/userInquiry";
+	}
+	
 }

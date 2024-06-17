@@ -125,6 +125,20 @@
 	.rvimg{
 		width: 40%;
 	}
+	.backList{
+		margin: 0 auto;
+		text-align: center;
+		margin-top: 100px;
+	}
+	.backbtn {
+		border: none;
+		padding: 7px;
+		border-radius: 22px;
+	    font-size: 15px;
+	    font-weight: 200;
+		background-color: black;
+		color: white;	
+	}
 </style>
 <script 
 	src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous">
@@ -145,6 +159,9 @@
 				alert(status + ", " + err);
 			}
 		});
+	}
+	function backUrl(){
+		 window.history.back();
 	}
 </script>
 </head>
@@ -215,13 +232,15 @@
 						<div class="cont">
 							<th:block th:if="${not #lists.isEmpty(r.battach)}">
 								<div th:each="a:${r.battach}">
-									<img class="rvimg" th:src="@{'/images/review/' + ${a.savedfname}}" alt="Image">
+									<img class="rvimg" th:src="@{'/images/review/'}+${a.savedfname}" alt="Image">
 								</div>
 							</th:block>
 							<p>[[${r.board_content}]]</p>
 						</div>
 					</div>
-			
+				</div>
+				<div class="backList">
+					<button class="backbtn" onclick="backUrl()">목록</button>
 				</div>
 			</div>
 		</section>

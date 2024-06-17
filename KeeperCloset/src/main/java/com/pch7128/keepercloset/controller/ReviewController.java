@@ -64,11 +64,19 @@ public class ReviewController {
 	
 	@PostMapping("/review-editform/{r_bnum}")
 	@ResponseBody
-	public String getEditForm(@PathVariable("r_bnum") int r_bnum,Model m,
-			@RequestParam(value="files") MultipartFile[] files,Review review) {
-		
-		
-		return "";
+	public Map<String,Object> getEditForm(@PathVariable("r_bnum") int r_bnum,
+			@RequestParam("rvnum") int rvnum,
+			@RequestParam(value="files") MultipartFile[] files,Review review,@AuthenticationPrincipal PrincipalDetails principal) {
+		System.out.println("수정하는 리뷰번호 :"+review.getR_bnum());
+		Map<String,Object> map = new HashMap<String, Object>();
+		try {
+			boolean ok=bSvc.editReview(files, review, principal.getMember(),rvnum);
+			map.put("ok",ok);
+		} catch (Exception e) {
+			e.printStackTrace();
+			map.put("ok", false);
+		}
+		return map;
 	}
 	
 	@PostMapping("/delete/{r_bnum}")

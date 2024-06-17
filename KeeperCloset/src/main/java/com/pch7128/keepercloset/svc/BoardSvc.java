@@ -21,6 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.pch7128.keepercloset.dto.Battach;
 import com.pch7128.keepercloset.dto.BattachDTO;
 import com.pch7128.keepercloset.dto.Member;
+import com.pch7128.keepercloset.dto.Reservation;
 import com.pch7128.keepercloset.dto.Review;
 import com.pch7128.keepercloset.repository.BattachRepository;
 import com.pch7128.keepercloset.repository.ReviewRepository;
@@ -37,6 +38,8 @@ public class BoardSvc {
 	private ReviewRepository reviewre;
 	@Autowired
 	private BattachRepository bAttre;
+	@Autowired
+	private MemberSvc mSvc;
 	@Autowired
 	private static final String RUpPath="/Users/eeeun/Desktop/git/KeeperCloset/KeeperCloset/src/main/resources/static/images/review";
 	
@@ -76,6 +79,21 @@ public class BoardSvc {
 		return flist;
 	}
 	
+	@Transactional
+	public boolean editReview(MultipartFile[] files,Review review,Member m,int rvnum) throws Exception{
+		
+		Review r=reviewre.findById(review.getR_bnum()).orElseThrow();
+		Reservation rv=mSvc.getRv(rvnum);
+		r.setMember(m);
+		r.setReservation(rv);		
+		List<Battach> flist=battachList(files,review);
+		r.setBattach(flist);
+		r.setBoard_content(review.getBoard_content());
+		LocalDate currentDate = LocalDate.now();
+		r.setBoard_posted(Date.valueOf(currentDate));
+		reviewre.save(r);
+		return true;
+	}
 	
 	public ReviewResponseDTO getReview(int r_bnum) {
 		
@@ -122,6 +140,8 @@ public class BoardSvc {
 		return bdto;
 	}
 	
+	
+	
 	public boolean deleteImg(int r_bnum) {
 		
 		List<Battach> battList=bAttre.getBattach(r_bnum);
@@ -144,6 +164,8 @@ public class BoardSvc {
 		return false;
 	}
 	
+	
+	//Page 처리
 	public Page<ReviewResponseDTO> reviewPaging(Pageable pageable){
 		
 		Page<Review> reviews=reviewre.findWithBattach(pageable);
@@ -160,4 +182,6 @@ public class BoardSvc {
 		
 		return new PageImpl<>(reviewDTO,pageable,reviews.getTotalElements());
 	}
+	
+	
 }
