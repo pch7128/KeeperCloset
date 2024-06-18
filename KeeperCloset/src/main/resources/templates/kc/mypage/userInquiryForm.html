@@ -1,10 +1,216 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http//www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
 <meta charset="UTF-8">
 <title>KeeperCloset-마이페이지</title>
+<style>
+/*	header*/
+	
+		* {
+		margin:0;
+		padding:0;
+	}
+
+	html,body {	
+		height: 100%; 
+		min-width: 1050px; 
+	}
+
+	a{
+		text-decoration: none;
+	}
+	a:visited{
+		color:white;
+	}
+	header{
+		
+		background-color: black;
+	}
+	
+	.headerM{
+		display: flex;
+		flex-direction: row;
+		flex-wrap: nowrap;
+		justify-content: space-between;
+		align-items: center;
+		height: 150px;
+		width: 980px;
+		margin: 0 auto;
+	}
+	
+	.mainlogo{
+		font-size: 28px;
+		font-weight: 500;
+		color: white;
+	}
+	
+	menu>ul{
+		list-style: none;
+		display: flex;
+		flex-direction: row;
+		flex-wrap: nowrap;
+		justify-content: space-between;
+		align-items: center;
+		width: 500px;
+	}
+	
+	menu>ul>li>a{
+		color: white;
+		font-size: 18px;
+	}
+/*	header end  */
+	main{
+		margin-top:100px;
+		margin-bottom: 100px;
+		
+	}
+	.inqFSection{
+		margin-left: 12rem;
+		margin-right: 12rem;
+		position: relative;	
+	}
+	.inqfWrap{
+		width: 650px;
+    	margin: 0 auto;
+	}
+	
+	.slash{
+		border-bottom: 1px solid rgb(217, 217, 217);
+		margin-top: 20px;
+		margin-bottom: 20px;
+	}
+	
+	.formWrap{
+		margin-top: 40px;
+	}
+	
+	#inqForm{
+		display: flex;
+    	flex-direction: column;
+	}
+	
+	.titleWrap{
+		border: 1px solid;
+		height: 35px;
+		padding-left: 5px;
+		border-radius: 3px;
+	}
+	
+	#inq_title{
+		border: none;
+		margin: 0 auto;
+		height: 100%;
+		width: 80%;
+		font-size: 16px;
+    	font-weight: 500;
+	}
+	.contentWrap{
+		border: 1px solid;
+		margin-top:10px;
+		border-radius: 4px;
+		height: 350px;
+		padding-left: 5px;
+		padding-top: 5px;
+	}
+	#inq_content{
+		resize: none;
+		border: none;
+		width: 96%;
+   	 	height: 100%;
+		font-size: 15px;
+    	font-weight: 400;
+	}
+	input,textarea:focus{
+		outline: none !important;
+	}
+	
+	.btnWrap{
+		display: flex;
+		width: 100%;
+		margin-top: 20px;
+		height: 40px;
+	}
+	.btnstyle{
+		width: 50%;
+	}
+	#reList,#dobtn{
+		width: 100%;
+    	height: 100%;
+		border: none;
+		cursor: pointer;
+	}
+	#dobtn{
+		background-color: black;
+    	color: white;
+	}
+	
+</style>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"
+	integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
+	crossorigin="anonymous"></script>
+<script>
+	
+</script>
 </head>
 <body>
+	<header>
+		<div class="headerM">
+			<div class="mainlogo">
+				<a href="/keep/main">KeeperCloset</a>
+			</div>
+			<menu>
+				<ul>
+					<li>
+						<a href="/rv/keeping">예약하기</a>
+					</li>
+					<li>
+						<a href="/review/list">이용후기</a>
+					</li>
+					<li>
+						<a href="">문의사항</a>
+					</li>
+					<li>
+						<th:block sec:authorize="isAnonymous()">
+							<a href="/user/login">로그인</a>
+						</th:block>
+						<th:block sec:authorize="isAuthenticated()">
+							<a href="/user/mypage/inquiry" sec:authentication="principal.member.id">
+						</th:block>
+					</li>
+				</ul>
+			</menu>
+			<div class="logoutT" sec:authorize="isAuthenticated()">
+					<a href="/logout">로그아웃</a>
+			</div>
+		</div>
+	</header>
+	<main>
+		<section class="inqFSection">
+			<div class="inqfWrap">
+				<div><h1 style="font-size: 30px;">1:1문의</h1></div>
+				<div class="slash"></div>
+				<div class="formWrap">
+					<form id="inqForm" method="post" action="/user/mypage/addinquiry">
+						<div class="titleWrap">
+							<input type="text" name="inq_title" id="inq_title">
+						</div>
+						<div class="contentWrap">
+							<textarea name="inq_content" id="inq_content" cols="40" rows="8"></textarea>
+						</div>
+						<div class="btnWrap">
+							<div class="btnstyle">
+								<button id="reList">취소</button>
+							</div>
+							<div class="btnstyle">
+								<button id="dobtn" type="submit">등록</button>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</section>
+	</main>
 
 </body>
 </html>

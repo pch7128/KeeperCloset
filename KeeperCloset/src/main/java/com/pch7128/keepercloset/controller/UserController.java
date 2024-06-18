@@ -20,6 +20,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.pch7128.keepercloset.dto.Inquiry;
+import com.pch7128.keepercloset.dto.InquiryResponseDTO;
 import com.pch7128.keepercloset.dto.JoinDTO;
 import com.pch7128.keepercloset.dto.Member;
 import com.pch7128.keepercloset.dto.MemberDTO;
@@ -134,10 +136,35 @@ public class UserController {
 	}
 	
 	@GetMapping("/mypage/inquiry")
-	public String inquiryPage(@AuthenticationPrincipal PrincipalDetails principal) {
+	public String inquiryPage(@PageableDefault(page = 0, size = 5) Pageable pg,
+			@AuthenticationPrincipal PrincipalDetails principal,Model m) {
 		
+		Page<InquiryResponseDTO> inqDTO=bSvc.inquriyPaging(pg,principal.getMember());
+		int nowP=inqDTO.getNumber()+1;
+		int totalP=inqDTO.getTotalPages();
+		int startP = Math.max(nowP - 2, 1);
+		int endP = Math.min(startP + 4, totalP);
+		startP = Math.max(1, endP - 4);
 		
+		m.addAttribute("inq", inqDTO);
+		m.addAttribute("startP", startP);
+		m.addAttribute("endP", endP);
+		m.addAttribute("nowP", nowP);
 		return "kc/mypage/userInquiry";
+	}
+	
+	@GetMapping("/mypage/addinquiry")
+	public String inquiryform(Model m) {
+		return "kc/mypage/userInquiryForm";
+	}
+	
+	@PostMapping("/mypage/addinquiry")
+	public String writeInquiry(Inquiry inq,@AuthenticationPrincipal PrincipalDetails principal) {
+		boolean ok=bSvc.addInquiry(principal.getMember(), inq);
+		if(ok) {
+			return "kc/mypage/userInquiryS";
+		} else
+		return "kc/mypage/userInquiryF";
 	}
 	
 }

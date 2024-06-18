@@ -20,15 +20,22 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.pch7128.keepercloset.dto.Battach;
 import com.pch7128.keepercloset.dto.BattachDTO;
+import com.pch7128.keepercloset.dto.Comment;
+import com.pch7128.keepercloset.dto.Inquiry;
+import com.pch7128.keepercloset.dto.InquiryResponseDTO;
 import com.pch7128.keepercloset.dto.Member;
 import com.pch7128.keepercloset.dto.Reservation;
 import com.pch7128.keepercloset.dto.Review;
 import com.pch7128.keepercloset.repository.BattachRepository;
+import com.pch7128.keepercloset.repository.CommentRepository;
+import com.pch7128.keepercloset.repository.InquiryRepository;
 import com.pch7128.keepercloset.repository.ReviewRepository;
 import com.pch7128.keepercloset.repository.RvRepository;
 import com.pch7128.keepercloset.dto.ReviewResponseDTO;
 import com.pch7128.keepercloset.exception.ResourceNotFoundException;
 
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
 
 @Service
@@ -39,11 +46,17 @@ public class BoardSvc {
 	@Autowired
 	private BattachRepository bAttre;
 	@Autowired
+	private InquiryRepository inqre;
+	@Autowired
+	private CommentRepository cre;
+	@Autowired
 	private MemberSvc mSvc;
 	@Autowired
 	private static final String RUpPath="/Users/eeeun/Desktop/git/KeeperCloset/KeeperCloset/src/main/resources/static/images/review";
+	@PersistenceContext
+	private EntityManager entityManager;
 	
-	
+	//리뷰 저장
 	@Transactional
 	public void saveReview(MultipartFile[] files,Review review, Member m) throws Exception{
 		review.setMember(m);
@@ -55,6 +68,7 @@ public class BoardSvc {
 		
 	}
 
+	//리뷰이미지 저장
 	public List<Battach> battachList(MultipartFile[] files,Review review) throws IllegalStateException,IOException{
 		
 		List<Battach> flist = new ArrayList<Battach>();
@@ -79,6 +93,7 @@ public class BoardSvc {
 		return flist;
 	}
 	
+	//리뷰 수정
 	@Transactional
 	public boolean editReview(MultipartFile[] files,Review review,Member m,int rvnum) throws Exception{
 		
@@ -95,6 +110,7 @@ public class BoardSvc {
 		return true;
 	}
 	
+	//리뷰 디테일
 	public ReviewResponseDTO getReview(int r_bnum) {
 		
 		Review review=reviewre.findById(r_bnum).orElseThrow();
@@ -106,6 +122,7 @@ public class BoardSvc {
 		return rdto;
 	}
 	
+	//리뷰key 찾기
 	public int getReviewNum(int rvnum) {
 		
 		Review r=reviewre.findByRbNum(rvnum);
@@ -116,6 +133,7 @@ public class BoardSvc {
 		
 	}
 	
+	//리뷰 삭제
 	@Transactional
 	public boolean deleteReview(int r_bnum) {
 		Review r=reviewre.findById(r_bnum).orElseThrow();
@@ -130,6 +148,7 @@ public class BoardSvc {
 		return true;
 	}
 	
+	//리뷰 이미지 찾기
 	public List<BattachDTO> getImg(int r_bnum) {
 		
 		List<Battach> b=bAttre.getBattach(r_bnum);
@@ -141,7 +160,7 @@ public class BoardSvc {
 	}
 	
 	
-	
+	//리뷰 이미지 삭제
 	public boolean deleteImg(int r_bnum) {
 		
 		List<Battach> battList=bAttre.getBattach(r_bnum);
@@ -154,6 +173,7 @@ public class BoardSvc {
 		return false;
 	}
 	
+	//리뷰 이미지 파일 삭제
 	public boolean deleteFile(Battach b) {
 		
 		File f = new File(RUpPath+"/"+b.getSavedfname());
@@ -164,8 +184,45 @@ public class BoardSvc {
 		return false;
 	}
 	
+	//1:1문의 저장
+	public boolean addInquiry(Member m, Inquiry inq) {
+		
+		inq.setMember(m);
+		LocalDate currentDate = LocalDate.now();
+		inq.setInq_date(Date.valueOf(currentDate));
+		inqre.save(inq);
+		return true;
+	}
 	
-	//Page 처리
+	//문의Page 처리 
+	public Page<InquiryResponseDTO> inquriyPaging(Pageable pageable,Member m){
+		
+		String jpql = "SELECT i FROM Inquiry i WHERE i.member.unum=:unum";
+		List<Inquiry> inqList=entityManager.createQuery(jpql,Inquiry.class)
+		.setParameter("unum", m.getUnum())
+		.getResultList();
+		
+		String countJpql = "SELECT COUNT(i) FROM Inquiry i WHERE i.member.unum=:unum";
+		long total=entityManager.createQuery(countJpql,Long.class)
+		.setParameter("unum", m.getUnum())
+		.getSingleResult();
+		
+		
+		for(Inquiry i:inqList) {
+			Comment c=cre.findByinq_num(i.getInq_num());
+			i.setComm(c);		
+		}
+		
+		List<InquiryResponseDTO> inqDTO = inqList.stream()
+				.map(inquiry -> new InquiryResponseDTO(inquiry))
+				.skip(pageable.getOffset())
+				.limit(pageable.getPageSize())
+				.collect(Collectors.toList());
+		
+		return new PageImpl<>(inqDTO,pageable,total);
+	}
+	
+	//리뷰Page 처리
 	public Page<ReviewResponseDTO> reviewPaging(Pageable pageable){
 		
 		Page<Review> reviews=reviewre.findWithBattach(pageable);

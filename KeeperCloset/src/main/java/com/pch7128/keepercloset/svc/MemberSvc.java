@@ -107,6 +107,7 @@ public class MemberSvc implements UserDetailsService{
 		 return new PageImpl<>(rvDTO,pageable,rvlist.size());
 	}
 	
+	//예약리스트 page 처리 
 	public Page<RvResponseDTO> rvpaging(int unum,Pageable pageable){
 		
 		String jpql="SELECT r FROM Reservation r WHERE r.member.unum = :unum";

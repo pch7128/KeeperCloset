@@ -68,37 +68,36 @@
 </style>
 </head>
 <body>
-<header>
-
-	<div class="headerM">
-		<div class="mainlogo">
-		<a href="/keep/main">KeeperCloset</a>
+	<header>
+		<div class="headerM">
+			<div class="mainlogo">
+			<a href="/keep/main">KeeperCloset</a>
+			</div>
+			<menu>
+				<ul>
+					<li>
+						<a href="/rv/keeping">예약하기</a>
+					</li>
+					<li>
+						<a href="/review/list">이용후기</a>
+					</li>
+						<a href="">문의사항</a>
+					</li>
+					<li>
+						<th:block sec:authorize="isAnonymous()">
+							<a href="/user/login">로그인</a>
+						</th:block>
+						<th:block sec:authorize="isAuthenticated()">
+							<a href="/user/mypage/inquiry" sec:authentication="principal.member.id">
+						</th:block>
+					</li>
+				</ul>
+			</menu>
+			<div class="logoutT" sec:authorize="isAuthenticated()">
+				<a href="/logout">로그아웃</a>
+			</div>
 		</div>
-		<menu>
-			<ul>
-				<li>
-					<a href="/rv/keeping">예약하기</a>
-				</li>
-				<li>
-					<a href="/review/list">이용후기</a>
-				</li>
-					<a href="">문의사항</a>
-				</li>
-				<li>
-					<th:block sec:authorize="isAnonymous()">
-						<a href="/user/login">로그인</a>
-					</th:block>
-					<th:block sec:authorize="isAuthenticated()">
-						<a href="/user/mypage/checkdetails" sec:authentication="principal.member.id">
-					</th:block>
-				</li>
-			</ul>
-		</menu>
-		<div class="logoutT" sec:authorize="isAuthenticated()">
-			<a href="/logout">로그아웃</a>
-		</div>
-	</div>
-</header>
+	</header>
 
 </body>
 
