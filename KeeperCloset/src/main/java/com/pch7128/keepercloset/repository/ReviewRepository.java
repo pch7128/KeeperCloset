@@ -18,4 +18,6 @@ public interface ReviewRepository extends JpaRepository<Review, Integer> {
 	
 	@Query("SELECT r FROM Review r WHERE r.reservation.rvnum=:rvnum")
 	Review findByRbNum(@Param("rvnum") int rvnum);
+	
+	
 }

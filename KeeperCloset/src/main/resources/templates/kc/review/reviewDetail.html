@@ -118,6 +118,7 @@
 	}
 	.delebtn{
 		cursor: pointer;
+		font-size: 14px;
 	}
 	.cont{
 		margin-top: 20px;
@@ -232,7 +233,7 @@
 						<div class="cont">
 							<th:block th:if="${not #lists.isEmpty(r.battach)}">
 								<div th:each="a:${r.battach}">
-									<img class="rvimg" th:src="@{'/images/review/'}+${a.savedfname}" alt="Image">
+									<img class="rvimg" th:src="@{'/static/images/review/'}+${a.savedfname}" alt="Image">
 								</div>
 							</th:block>
 							<p>[[${r.board_content}]]</p>

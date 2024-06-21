@@ -301,7 +301,7 @@
 								<th:block th:if="${not #lists.isEmpty(r.battach)}">
 									<th:block th:each="a, status :${r.battach}">
 										
-											<img class="preview" th:src="@{'/images/review/'+${a.savedfname}}" th:onclick="'deleteImg(\'' + ${status.index} + '\')'">
+											<img class="preview" th:src="@{'/static/images/review/'+${a.savedfname}}" th:onclick="'deleteImg(\'' + ${status.index} + '\')'">
 									
 									</th:block>
 								</th:block>

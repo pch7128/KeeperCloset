@@ -194,15 +194,42 @@ public class BoardSvc {
 		return true;
 	}
 	
+	//1:1문의 디테일
+	public InquiryResponseDTO getInq(int inq_num) {
+		Inquiry inq=inqre.findById(inq_num).orElseThrow();
+		
+		return new InquiryResponseDTO(inq);
+	}
+	
+	//1:1 문의 수정
+	public boolean inqEdit(Inquiry i) {
+		
+		Inquiry inq=inqre.findById(i.getInq_num()).orElseThrow();
+		inq.setInq_title(i.getInq_title());
+		inq.setInq_content(i.getInq_content());
+		LocalDate currentDate = LocalDate.now();
+		inq.setInq_date(Date.valueOf(currentDate));
+		inqre.save(inq);
+		return true;
+	}
+	
+	//1:1 문의 삭제
+	public boolean inqDelete(int inq_num) {
+		Inquiry inq=inqre.findById(inq_num).orElseThrow();
+		inq.set_deleted(true);
+		inqre.save(inq);
+		return true;
+	}
+	
 	//문의Page 처리 
 	public Page<InquiryResponseDTO> inquriyPaging(Pageable pageable,Member m){
 		
-		String jpql = "SELECT i FROM Inquiry i WHERE i.member.unum=:unum";
+		String jpql = "SELECT i FROM Inquiry i WHERE i.member.unum=:unum AND i.is_deleted= false";
 		List<Inquiry> inqList=entityManager.createQuery(jpql,Inquiry.class)
 		.setParameter("unum", m.getUnum())
 		.getResultList();
 		
-		String countJpql = "SELECT COUNT(i) FROM Inquiry i WHERE i.member.unum=:unum";
+		String countJpql = "SELECT COUNT(i) FROM Inquiry i WHERE i.member.unum=:unum AND i.is_deleted= false";
 		long total=entityManager.createQuery(countJpql,Long.class)
 		.setParameter("unum", m.getUnum())
 		.getSingleResult();

@@ -13,4 +13,5 @@ public interface CommentRepository extends JpaRepository<Comment, Integer>{
 	@Query("SELECT c FROM Comment c WHERE c.inq.inq_num=:inq_num")
 	Comment findByinq_num(@Param("inq_num") int inq_num);
 
+	
 }

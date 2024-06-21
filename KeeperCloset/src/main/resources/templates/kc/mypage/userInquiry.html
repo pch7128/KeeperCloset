@@ -111,6 +111,10 @@
 		flex-direction: row;
 		justify-content: space-between;
 	}
+	.ContentWrap:hover{
+		background-color: #fafafa;
+		cursor: pointer;
+	}
 	.comm{
 		flex-shrink: 0;
 		width: 136px;
@@ -175,7 +179,8 @@
 				</div>
 				<div class="slash"></div>
 				<th:block th:each="i:${inq}">
-					<div class="ContentWrap">
+					<div class="ContentWrap" 
+					 th:onclick="|location.href='/user/mypage/inquiry_detail/' + [[${i.inq_num}]]|">
 						<div class="inqC">
 							<div class="comm">
 								<th:block th:if="${i.comm == null}">

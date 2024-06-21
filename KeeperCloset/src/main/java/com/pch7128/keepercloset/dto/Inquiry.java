@@ -30,6 +30,8 @@ public class Inquiry {
 	
 	private java.sql.Date inq_date;
 	
+	private boolean is_deleted=false;
+	
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="unum")
 	private Member member;

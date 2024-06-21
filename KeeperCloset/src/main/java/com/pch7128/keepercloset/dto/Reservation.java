@@ -21,7 +21,7 @@ import jakarta.persistence.Table;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
-@Component
+
 @Data
 @RequiredArgsConstructor
 @Entity

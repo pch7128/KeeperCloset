@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -135,6 +136,7 @@ public class UserController {
 		return "kc/review/reviewResult";
 	}
 	
+	//1:1 문의리스트
 	@GetMapping("/mypage/inquiry")
 	public String inquiryPage(@PageableDefault(page = 0, size = 5) Pageable pg,
 			@AuthenticationPrincipal PrincipalDetails principal,Model m) {
@@ -153,11 +155,12 @@ public class UserController {
 		return "kc/mypage/userInquiry";
 	}
 	
+	//1:1 문의 작성
 	@GetMapping("/mypage/addinquiry")
 	public String inquiryform(Model m) {
 		return "kc/mypage/userInquiryForm";
 	}
-	
+	//1:1 문의 작성
 	@PostMapping("/mypage/addinquiry")
 	public String writeInquiry(Inquiry inq,@AuthenticationPrincipal PrincipalDetails principal) {
 		boolean ok=bSvc.addInquiry(principal.getMember(), inq);
@@ -166,5 +169,44 @@ public class UserController {
 		} else
 		return "kc/mypage/userInquiryF";
 	}
+	
+	//1:1 문의디테일
+	@GetMapping("/mypage/inquiry_detail/{inq_num}")
+	public String inqDetailPage(@PathVariable("inq_num") int inq_num,Model m) {
+		InquiryResponseDTO inq=bSvc.getInq(inq_num);
+		m.addAttribute("inq", inq);
+		return "kc/mypage/userInquiryDetail";
+	}
+	
+	//1:1 문의 수정
+	@GetMapping("/mypage/inquiry_edit/{inq_num}")
+	public String inqEditPage(@PathVariable("inq_num") int inq_num,Model m) {
+		InquiryResponseDTO inq=bSvc.getInq(inq_num);
+		m.addAttribute("i", inq);
+		
+		return "kc/mypage/userInquiryEdit";
+	}
+	
+	@PostMapping("/mypage/inquiry_edit/{inq_num}")
+	public String inqEdit(@PathVariable("inq_num") int inq_num,Inquiry i) {
+		i.setInq_num(inq_num);
+		boolean ed=bSvc.inqEdit(i);
+		if(ed) {
+			return "kc/mypage/userInquiryS";
+		} else
+			return "kc/mypage/userInquiryF";
+	}
+	
+	//1:1 문의 삭제
+	@PostMapping("/mypage/inquiry-delete/{inq_num}")
+	@ResponseBody
+	public Map<String, Object> inqDelete(@PathVariable("inq_num") int inq_num){
+		Map<String, Object> map = new HashMap<String, Object>();
+		boolean result=bSvc.inqDelete(inq_num);
+		map.put("result", result);
+		
+		return map;
+	}
+	
 	
 }
