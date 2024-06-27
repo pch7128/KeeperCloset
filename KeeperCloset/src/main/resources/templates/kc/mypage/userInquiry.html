@@ -3,279 +3,69 @@
 	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Insert title here</title>
-<script src="https://kit.fontawesome.com/309845435e.js" crossorigin="anonymous"></script>
-<style>
-	/*	header*/
-	
-		* {
-		margin:0;
-		padding:0;
-	}
-
-	html,body {	
-		height: 100%; 
-		min-width: 1050px; 
-	}
-
-	a{
-		text-decoration: none;
-	}
-	a:visited{
-		color:white;
-	}
-	header{
-		
-		background-color: black;
-	}
-	
-	.headerM{
-		display: flex;
-		flex-direction: row;
-		flex-wrap: nowrap;
-		justify-content: space-between;
-		align-items: center;
-		height: 150px;
-		width: 980px;
-		margin: 0 auto;
-	}
-	
-	.mainlogo{
-		font-size: 28px;
-		font-weight: 500;
-		color: white;
-	}
-	
-	menu>ul{
-		list-style: none;
-		display: flex;
-		flex-direction: row;
-		flex-wrap: nowrap;
-		justify-content: space-between;
-		align-items: center;
-		width: 500px;
-	}
-	
-	menu>ul>li>a{
-		color: white;
-		font-size: 18px;
-	}
-/*	header end  */
-	main{
-		margin-top:100px;
-		margin-bottom: 100px;
-	
-	}
-	.mainCon{
-		display: flex;
-		width: 80%;
-		margin: 0 auto;
-	}
-	aside{
-		margin-top: 20px;
-    	padding-left: 20px;
-		width: 240px;
-		flex-shrink: 0;
-	}
-	aside ul,li{
-		list-style: none;
-	}
-	.mpNav{
-		height: 200px;
-	}
-	.mpNavC{
-		font-size: 17px;
-		font-weight: 400;
-		padding:15px;
-		
-	}
-	.mpNavC a{
-		color: rgb(179, 179, 179);
-		
-	}
-
-	.mpNavC:hover{
-		background-color: #fafafa;
-	}
-	
-	.mpNavC:active{
-		background-color: #fafafa;
-	}
-	.mpNavC:active a{
-		color: black;
-	}
-	.mpNavC:hover a {
-		color: black;
-	}
-	.mpA:active{
-		color: black;
-	}
-	.inqSection{
-		margin-left: 10px;
-		position: relative;	
-		flex-grow: 1;
-	}
-	.inqListWrap{
-		width: 650px;
-    	margin: 0 auto;
-	}
-	.top{
-		display: flex;
-		flex-direction: row;
-		justify-content: space-between;
-		align-items: center;
-	}
-	.top a:visited{
-		color:white;
-	}
-	.addInqbtn{
-		border: 1px solid;
-		padding: 7px;
-		background-color: black;
-		color: white;
-		font-weight: 200;
-		font-size: 15px;
-		cursor: pointer;
-	}
-	.slash{
-		border-bottom: 1px solid rgb(217, 217, 217);
-		margin-top: 20px;
-		margin-bottom: 20px;
-	}
-	
-	.ContentWrap{
-		margin: 0 auto;
-    	text-align: center;
-		width: 600px;
-		border-bottom: 1px solid rgb(245, 245, 245);
-    	padding: 15px 0px 17px;
-	}
-	.inqC{
-		display: flex;
-		flex-direction: row;
-		justify-content: space-between;
-	}
-	.inqC:focus{
-		background-color: #fafafa;
-		cursor: pointer;
-	}
-	.comm{
-		flex-shrink: 0;
-		width: 136px;
-		margin-right: 10px;
-		color: cornflowerblue;
-	}
-	.inqTitle{
-		flex: 1 1 0%;
-		text-align: left;
-		margin-left: 15px;
-	}
-	.inqDate{
-		font-size: 13px;
-	}
-	.noContent{
-		margin:0 auto;
-		text-align: center;
-		margin-top: 50px;
-	}
-
-</style>
-<script>
-
-</script>
 </head>
 <body>
-	<header>
-		<div class="headerM">
-			<div class="mainlogo">
-				<a href="/keep/main">KeeperCloset</a>
-			</div>
-			<menu>
-				<ul>
-					<li>
-						<a href="/rv/keeping">예약하기</a>
-					</li>
-					<li>
-						<a href="/review/list">이용후기</a>
-					</li>
-					<li>
-						<a href="">문의사항</a>
-					</li>
-					<li>
-						<th:block sec:authorize="isAnonymous()">
-							<a href="/user/login">로그인</a>
-						</th:block>
-						<th:block sec:authorize="isAuthenticated()">
-							<a href="/user/mypage/inquiry" sec:authentication="principal.member.id">
-						</th:block>
-					</li>
-				</ul>
-			</menu>
-			<div class="logoutT" sec:authorize="isAuthenticated()">
-					<a href="/logout">로그아웃</a>
-			</div>
-		</div>
-	</header>
-	<main>
-		<div class="mainCon">
-			<aside>
-				<ul class="mpNav">
-					<li class="mpNavC">
-						<a class="mpA" href="" >내 정보 수정</a>
-					</li>
-					<li class="mpNavC">
-						<a class="mpA" href="/user/mypage/inquiry" >1:1 문의</a>
-					</li>
-					<li class="mpNavC">
-						<a class="mpA" href="/user/mypage/checkdetails">예약내역 확인</a>
-					</li>
-				</ul>
-			</aside> 
-			<section class="inqSection">
-				<div class="inqListWrap">
-					<div class="top">
-						<h1 style="font-size: 30px;">1:1문의</h1>
-						<div>
-							<a class="addInqbtn" href="/user/mypage/addinquiry">문의하기</a>
-						</div>
-					</div>
-					<div class="slash"></div>
-					<th:block th:each="i:${inq}">
-						<div class="ContentWrap" 
-						 th:onclick="|location.href='/user/mypage/inquiry_detail/' + [[${i.inq_num}]]|">
-							<div class="inqC">
-								<div class="comm">
-									<th:block th:if="${i.comm == null}">
-									<div style="color:red;">
-										답변 대기
-									</div>
-									</th:block>
-									<th:block th:if="${i.comm != null}">
-									답변 완료
-									</th:block>
-								</div>
-								<div>
-									<i class="fa-sharp fa-regular fa-q"></i>
-								</div>
-								<div class="inqTitle">
-									[[${i.inq_title}]]
-								</div>
-								<div class="inqDate">
-									[[${i.inq_date}]]
-								</div>
+	<div th:fragment="main-content">
+		<main>
+			<div class="mainCon">
+				<aside>
+					<ul class="mpNav">
+						<li class="mpNavC">
+							<a class="mpA" href="" >내 정보 수정</a>
+						</li>
+						<li class="mpNavC">
+							<a class="mpA" href="/user/mypage/inquiry" >1:1 문의</a>
+						</li>
+						<li class="mpNavC">
+							<a class="mpA" href="/user/mypage/checkdetails">예약내역 확인</a>
+						</li>
+					</ul>
+				</aside> 
+				<section class="inqSection">
+					<div class="inqListWrap">
+						<div class="top">
+							<h1 style="font-size: 30px;">1:1문의</h1>
+							<div>
+								<a class="addInqbtn" href="/user/mypage/addinquiry">문의하기</a>
 							</div>
 						</div>
-					</th:block>
-					<th:block th:if="${inq.empty}">
-						<div class="noContent">
-							<p>문의하신 내역이 없습니다.</p>
-						</div>
-					</th:block>
-				</div>
-			</section>
-		</div>
-	</main>
-
+						<div class="slash"></div>
+						<th:block th:each="i:${inq}">
+							<div class="ContentWrap" 
+							 th:onclick="|location.href='/user/mypage/inquiry_detail/' + [[${i.inq_num}]]|">
+								<div class="inqC">
+									<div class="comm">
+										<th:block th:if="${i.comm == null}">
+										<div style="color:red;">
+											답변 대기
+										</div>
+										</th:block>
+										<th:block th:if="${i.comm != null}">
+										답변 완료
+										</th:block>
+									</div>
+									<div>
+										<i class="fa-sharp fa-regular fa-q"></i>
+									</div>
+									<div class="inqTitle">
+										[[${i.inq_title}]]
+									</div>
+									<div class="inqDate">
+										[[${i.inq_date}]]
+									</div>
+								</div>
+							</div>
+						</th:block>
+						<th:block th:if="${inq.empty}">
+							<div class="noContent">
+								<p>문의하신 내역이 없습니다.</p>
+							</div>
+						</th:block>
+					</div>
+				</section>
+			</div>
+		</main>
+	</div>
 </body>
 </html>

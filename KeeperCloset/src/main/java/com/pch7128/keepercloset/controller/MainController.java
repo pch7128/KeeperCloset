@@ -20,7 +20,10 @@ public class MainController {
 			m.addAttribute("unum", pd.getMember().getUnum());
 		}
 		
-		return "kc/main/kcMain";
+		m.addAttribute("title", "KeeperCloset");
+//		m.addAttribute("ct", "kc/main/kcMain");
+		
+		return "common/layouts/mainLayout";
 	}
 	
 	

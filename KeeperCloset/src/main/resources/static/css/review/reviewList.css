@@ -1,0 +1,86 @@
+@charset "UTF-8";
+
+	main{
+		margin-top:100px;
+		margin-bottom: 100px;
+	}
+	.rvlistSection{
+		margin-left: 12rem;
+		margin-right: 12rem;
+		position: relative;
+	}
+	.rvlistWrap{
+		max-width: 800px;
+		margin: 0 auto;
+	}
+	.tableWrap{
+		margin-top: 65px;
+	}
+	.reviewtb{
+		margin: 0 auto;
+		width: 100%;
+		border-top: 1px solid gray;
+		table-layout: fixed;
+		border-spacing: 0;
+	}
+	thead th{
+		height: 65px;
+		border-bottom: 1px solid gray;
+		font-size: 16px;
+		font-weight: 400px;
+	}
+	.reviewC{
+		white-space:nowrap;
+		overflow : hidden;
+		text-overflow:ellipsis;
+	}
+	.rv_content{
+		height: 55px;
+		text-align: center;
+	}
+	table .rv_content:hover{
+		background-color: #f3f3f3;
+		cursor: pointer;
+	}
+	.rv_content td{
+		border-bottom: 1px solid #f5f5f5;
+		font-size: 14px;
+		font-weight: 300;
+		color: black;
+	}
+	/* page */
+	
+	.pages ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 20px 0;
+    text-align: center;
+	}
+	
+	.pages ul li {
+	    display: inline-block;
+	    margin: 0 5px;
+	}
+	
+	.pages ul li a {
+	    display: inline-block;
+	    width: 30px; /* 원하는 크기로 조절 */
+	    height: 30px; /* 원하는 크기로 조절 */
+	    line-height: 30px; /* 버튼 내부의 텍스트를 중앙에 정렬 */
+	    text-align: center;
+	    border-radius: 50%; /* 원 모양으로 만들기 */
+	    background-color: #f0f0f0; /* 배경색 설정 */
+	    text-decoration: none; /* 링크 밑줄 제거 */
+	    color: #333; /* 텍스트 색상 */
+	}
+	
+	.pages ul li.disable a {
+	    pointer-events: none; /* 비활성 상태일 때 클릭 방지 */
+	    background-color: #ccc; /* 비활성 상태일 때 배경색 변경 */
+	}
+	
+	.pages ul li.active a {
+	    font-weight: bold; /* 현재 페이지 강조 */
+	    background-color: black; /* 현재 페이지 배경색 변경 */
+	    color: #fff; /* 현재 페이지 텍스트 색상 변경 */
+	}

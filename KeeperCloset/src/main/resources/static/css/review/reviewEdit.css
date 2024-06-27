@@ -1,0 +1,106 @@
+@charset "UTF-8";
+	
+	main{
+		margin-top:100px;
+		margin-bottom: 100px;
+		
+	}
+	.reviewSection{
+		margin-left: 12rem;
+		margin-right: 12rem;
+		position: relative;	
+	}
+	.reviewwrap{
+		width: 650px;
+    	margin: 0 auto;
+	}
+	.divwrap{
+		margin-top: 75px;
+	}
+	.rformwrap{
+		margin-top: 50px;
+	}
+	
+	
+	#editForm{
+		display: flex;
+    	flex-direction: column;
+	}
+	.inputWrap{
+		width: 100%;
+		border: 1px solid black;
+		border-radius: 4px;
+		margin-bottom: 20px;
+		height: 42px;
+		padding-left: 5px;
+		display: flex;
+		align-items: center;
+	}
+	.reviewInput{
+		border: none;
+		font-size: 18px;
+		height: 30px;
+		width: 600px;
+	}
+	.ttWrap{
+		border: 1px solid black;
+		width: 100%;
+		height: 250px;
+		padding-left: 5px;
+		padding-top: 5px;
+		border-radius: 4px;
+	}
+	#board_content{
+		height: 100%;
+		width: 650px;
+		font-size: 14px;
+		resize: none;
+		border: none;
+	}
+	input,textarea:focus{
+		outline: none !important;
+	}
+	i{
+		background-color: gainsboro;
+		font-size:35px;
+	}
+	i.fa-sharp.fa-thin.fa-plus{
+		padding-left: 14px;
+	    padding-right: 14px;
+	    padding-top: 9px;
+	    padding-bottom: 5px;
+	    cursor: pointer;
+	}
+	.fa-plus:before {
+		font-style: normal;
+	}
+	#display-image{
+		display: flex;
+	    flex-direction: row;
+	    align-items: flex-start;
+	    margin-top: 10px;
+	}
+	.preview{
+		width:20%;
+		margin-right: 5px;
+		cursor: pointer;
+	}
+	.btnWrap{
+		display: flex;
+		width: 100%;
+		margin-top: 20px;
+		height: 40px;
+	}
+	.btnstyle{
+		width: 50%;
+	}
+	#reList,#dobtn{
+		width: 100%;
+    	height: 100%;
+		border: none;
+		cursor: pointer;
+	}
+	#dobtn{
+		background-color: black;
+    	color: white;
+	}

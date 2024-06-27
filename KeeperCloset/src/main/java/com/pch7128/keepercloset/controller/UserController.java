@@ -47,13 +47,19 @@ public class UserController {
 	private BoardSvc bSvc;
 	
 	@GetMapping("/login")
-	public String loginForm() {
-		return "kc/login/loginForm";
+	public String loginForm(Model m) {
+		m.addAttribute("title", "KeeperCloset-로그인");
+		m.addAttribute("ct", "kc/login/loginForm");
+		m.addAttribute("cCss", "/static/css/login/loginForm.css");
+		return "common/layouts/loginLayout";
 	}
 
 	@GetMapping("/signup")
-	public String joinForm() {
-		return "kc/login/JoinForm";
+	public String joinForm(Model m) {
+		m.addAttribute("title", "KeeperCloset-회원가입");
+		m.addAttribute("ct", "kc/login/joinForm");
+		m.addAttribute("cCss", "/static/css/login/joinForm.css");
+		return "common/layouts/loginLayout";
 	}
 	
 	@PostMapping("/signup/idcheck")
@@ -71,10 +77,16 @@ public class UserController {
 		System.out.println(j.getAddlist().size());
 		boolean result=mSvc.join(j);
 		if(result){
-			return "kc/login/signUpS";
-		} else
+			m.addAttribute("title", "KeeperCloset-회원가입");
+			m.addAttribute("ct", "kc/login/signUpS");
+
+			return "common/layouts/loginLayout";
+		} else {
+			m.addAttribute("title", "KeeperCloset-회원가입");
+			m.addAttribute("ct", "kc/login/signUpF");
+			return "common/layouts/loginLayout";
+		}
 		
-		return "kc/login/signUpF";
 	}
 	
 	@GetMapping("/mypage")
@@ -106,14 +118,23 @@ public class UserController {
 		m.addAttribute("endP", endP);
 		m.addAttribute("nowP", nowP);
 		
-		return "kc/mypage/bookingList";
+		m.addAttribute("title", "KeeperCloset 마이페이지-예약 현황");
+		m.addAttribute("ct", "kc/mypage/bookingList");
+		m.addAttribute("cCss", "/static/css/mypage/bookingList.css");		
+		
+		
+		return "common/layouts/mypageLayout";
 	}
 	
 	@GetMapping("/review/write/{rvnum}")
 	public String reviewForm(@PathVariable("rvnum") int rvnum,Model m) {
 		Reservation rv=mSvc.getRv(rvnum);
 		m.addAttribute("rv", rv);
-		return "kc/review/reviewForm";
+		m.addAttribute("title", "KeeperCloset 이용후기");
+		m.addAttribute("ct", "kc/review/reviewForm");
+		m.addAttribute("cCss", "/static/css/review/reviewForm.css");
+		
+		return "common/layouts/reviewLayout";
 	}
 	
 	@PostMapping("/review/addreview/{rvnum}")
@@ -142,7 +163,10 @@ public class UserController {
 		int r_bnum=bSvc.getReviewNum(rvnum);
 		System.out.println("리뷰번호 :"+r_bnum);
 		m.addAttribute("r_bnum", r_bnum);	
-		return "kc/review/reviewResult";
+		m.addAttribute("title", "KeeperCloset 이용후기");
+		m.addAttribute("ct", "kc/review/reviewResult");
+//		m.addAttribute("cCss", "/static/css/review/reviewForm.css");
+		return "common/layouts/reviewLayout";
 	}
 	
 	//1:1 문의리스트
@@ -161,22 +185,36 @@ public class UserController {
 		m.addAttribute("startP", startP);
 		m.addAttribute("endP", endP);
 		m.addAttribute("nowP", nowP);
-		return "kc/mypage/userInquiry";
+		
+		m.addAttribute("title", "KeeperCloset 1:1문의");
+		m.addAttribute("ct", "kc/mypage/userInquiry");
+		m.addAttribute("cCss", "/static/css/mypage/userInquiry.css");
+		
+		return "common/layouts/mypageLayout";
 	}
 	
 	//1:1 문의 작성
 	@GetMapping("/mypage/addinquiry")
 	public String inquiryform(Model m) {
-		return "kc/mypage/userInquiryForm";
+		m.addAttribute("title", "KeeperCloset 1:1문의");
+		m.addAttribute("ct", "kc/mypage/userInquiryForm");
+		m.addAttribute("cCss", "/static/css/mypage/userInquiryForm.css");
+		return "common/layouts/mypageLayout";
 	}
 	//1:1 문의 작성
 	@PostMapping("/mypage/addinquiry")
-	public String writeInquiry(Inquiry inq,@AuthenticationPrincipal PrincipalDetails principal) {
+	public String writeInquiry(Inquiry inq,@AuthenticationPrincipal PrincipalDetails principal,Model m) {
 		boolean ok=bSvc.addInquiry(principal.getMember(), inq);
 		if(ok) {
-			return "kc/mypage/userInquiryS";
-		} else
-		return "kc/mypage/userInquiryF";
+			m.addAttribute("title", "KeeperCloset 1:1문의");
+			m.addAttribute("ct", "kc/mypage/userInquiryS");
+
+		} else {
+			m.addAttribute("title", "KeeperCloset 1:1문의");
+			m.addAttribute("ct", "kc/mypage/userInquiryF");
+
+		}
+		return "common/layouts/mypageLayout";
 	}
 	
 	//1:1 문의디테일
@@ -184,7 +222,10 @@ public class UserController {
 	public String inqDetailPage(@PathVariable("inq_num") int inq_num,Model m) {
 		InquiryResponseDTO inq=bSvc.getInq(inq_num);
 		m.addAttribute("inq", inq);
-		return "kc/mypage/userInquiryDetail";
+		m.addAttribute("title", "KeeperCloset 1:1문의");
+		m.addAttribute("ct", "kc/mypage/userInquiryDetail");
+		m.addAttribute("cCss", "/static/css/mypage/userInquiryDetail.css");
+		return "common/layouts/mypageLayout";
 	}
 	
 	//1:1 문의 수정
@@ -192,18 +233,25 @@ public class UserController {
 	public String inqEditPage(@PathVariable("inq_num") int inq_num,Model m) {
 		InquiryResponseDTO inq=bSvc.getInq(inq_num);
 		m.addAttribute("i", inq);
-		
-		return "kc/mypage/userInquiryEdit";
+		m.addAttribute("title", "KeeperCloset 1:1문의");
+		m.addAttribute("ct", "kc/mypage/userInquiryEdit");
+		m.addAttribute("cCss", "/static/css/mypage/userInquiryEdit.css");
+		return "common/layouts/mypageLayout";
 	}
 	
 	@PostMapping("/mypage/inquiry_edit/{inq_num}")
-	public String inqEdit(@PathVariable("inq_num") int inq_num,Inquiry i) {
+	public String inqEdit(@PathVariable("inq_num") int inq_num,Inquiry i,Model m) {
 		i.setInq_num(inq_num);
 		boolean ed=bSvc.inqEdit(i);
 		if(ed) {
-			return "kc/mypage/userInquiryS";
-		} else
-			return "kc/mypage/userInquiryF";
+			m.addAttribute("title", "KeeperCloset 1:1문의");
+			m.addAttribute("ct", "kc/mypage/userInquiryS");
+
+		} else {
+			m.addAttribute("title", "KeeperCloset 1:1문의");
+			m.addAttribute("ct", "kc/mypage/userInquiryF");
+		}
+			return "common/layouts/mypageLayout";
 	}
 	
 	//1:1 문의 삭제

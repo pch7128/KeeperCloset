@@ -1,0 +1,98 @@
+@charset "UTF-8";
+
+	
+	main{
+		
+		margin-top: 100px;
+    	margin-bottom: 100px;
+	}
+	
+	.loginSection{
+		position: relative;
+		margin-left: 15rem;
+		margin-right: 15rem;
+	}
+	
+	.wrap{
+		margin: 0 auto;
+    	text-align: center;
+		padding-left: 70px;
+	    padding-right: 70px;
+	    display: flex;
+	    flex-direction: column;
+	    justify-content: center;
+	    align-content: center;
+	    align-items: stretch;
+	}
+	
+	#loginForm{
+		margin-top: 40px;
+   		width: 100%;
+	}
+	
+	.data-brackets-id-wrap{
+		border: 1px solid;
+		border-radius: 4px;
+		width: 340px;
+		height: 55px;
+		margin: 0 auto;
+		/* padding-left: 3px; */
+		display: flex;
+		align-content: center;
+		justify-content: flex-start;
+		align-items: center;
+		padding-left: 7px;
+	}
+	
+	.data-brackets-id-input{
+		border: none;
+		width: 300px;
+		font-size: 16px;
+		height: 100%
+	}
+	
+	.data-brackets-id-input:focus{
+		outline: none !important;
+	}
+	
+	.dowrap{
+		margin-top: 35px;
+	}
+	.logbtn{
+		width: 350px;
+    	height: 51px;
+		font-size: 18px;
+		background: black;
+		border-radius: 4px;
+		color: white;
+		font-weight: 600;
+		border-width: thin
+		
+	}
+	
+	.logbtn:hover{
+		background: white;
+		color: black;
+		border-color: gray;
+	}
+	
+	.joinbtn{
+		width: 350px;
+    	height: 51px;
+		font-size: 18px;
+		background: white;
+		border-radius: 4px;
+		color: black;
+		font-weight: 600;
+		border-width: thin;
+		border-color: gray;
+	}
+	
+	.joinbtn:hover{
+		background: black;
+		color: white;
+		
+	}
+	.kakaowrap{
+		margin-top: 20px;
+	}

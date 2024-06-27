@@ -36,7 +36,10 @@ public class ReviewController {
 		
 		Page<ReviewResponseDTO> reviews=bSvc.reviewPaging(pg);
 		m.addAttribute("r", reviews);
-		return "kc/review/reviewList";
+		m.addAttribute("title", "KeeperCloset 이용후기");
+		m.addAttribute("ct", "kc/review/reviewList");
+		m.addAttribute("cCss", "/static/css/review/reviewList.css");
+		return "common/layouts/reviewLayout";
 	}
 	
 	@GetMapping("/review-detail/{r_bnum}")
@@ -51,15 +54,20 @@ public class ReviewController {
 		
 		ReviewResponseDTO r=bSvc.getReview(r_bnum);
 		m.addAttribute("r", r);
-		
-		return "kc/review/reviewDetail";
+		m.addAttribute("title", "KeeperCloset 이용후기");
+		m.addAttribute("ct", "kc/review/reviewDetail");
+		m.addAttribute("cCss", "/static/css/review/reviewDetail.css");
+		return "common/layouts/reviewLayout";
 	}
 	
 	@GetMapping("/review-editform/{r_bnum}")
 	public String getEditForm(@PathVariable("r_bnum") int r_bnum,Model m) {
 		ReviewResponseDTO r=bSvc.getReview(r_bnum);
 		m.addAttribute("r", r);
-		return "kc/review/reviewEdit";
+		m.addAttribute("title", "KeeperCloset 이용후기");
+		m.addAttribute("ct", "kc/review/reviewEdit");
+		m.addAttribute("cCss", "/static/css/review/reviewEdit.css");
+		return "common/layouts/reviewLayout";
 	}
 	
 	@PostMapping("/review-editform/{r_bnum}")

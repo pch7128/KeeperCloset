@@ -32,14 +32,20 @@ public class RvController {
 	
 	@GetMapping("/keeping")
 	public String bookingPage(@AuthenticationPrincipal PrincipalDetails principal,Model m) {
-		System.out.println(principal.getMember().getUnum());
+
 		if(principal!=null) {
 			m.addAttribute("unum", principal.getMember().getUnum());
+			m.addAttribute("title", "KeeperCloset 예약");
+			m.addAttribute("ct", "kc/rv/booking");
+			m.addAttribute("cCss", "/static/css/rv/booking.css");
 		} else {
 			m.addAttribute("unum", "");
+			m.addAttribute("title", "KeeperCloset 예약");
+			m.addAttribute("ct", "kc/main/pleaseLogin");
+			m.addAttribute("cCss", "/static/css/main/pleaseLogin.css");
 		}
 
-		return "kc/rv/booking";
+		return "common/layouts/rvLayout";
 	}
 	
 	
@@ -51,9 +57,16 @@ public class RvController {
 		
 		Reservation result=rsvc.saveRv(unum, rv,stnum);
 		if(result==null) {
-			return "kc/rv/bookingFail";
+			m.addAttribute("title", "KeeperCloset 예약");
+			m.addAttribute("ct", "kc/rv/bookingFail");
+			m.addAttribute("cCss", "/static/css/rv/booking.css");
+		} else {
+			m.addAttribute("title", "KeeperCloset 예약");
+			m.addAttribute("ct", "kc/rv/bookingResult");
+			m.addAttribute("cCss", "/static/css/rv/booking.css");
 		}
-		return "kc/rv/bookingResult";
+	
+		return "common/layouts/rvLayout";
 	}
 	
 	

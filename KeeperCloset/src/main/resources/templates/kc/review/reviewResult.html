@@ -3,13 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <title>리뷰등록</title>
-<script 
-	src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous">
-</script>
 
 </head>
 <body>
-	<div>
+	<div th:fragment="main-content">
 		<p>후기 등록이 완료되었습니다.
 		<a th:href="@{'/review/review-detail/'+${r_bnum}}">작성한후기 보러가기</a>
 	</div>

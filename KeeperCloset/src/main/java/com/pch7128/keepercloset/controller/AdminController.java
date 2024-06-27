@@ -39,8 +39,11 @@ public class AdminController {
 		List<InquiryResponseDTO> inqdto =aSvc.getInqList();
 		
 		m.addAttribute("inq", inqdto);
+		m.addAttribute("title", "KeeperCloset-관리자 페이지");
+		m.addAttribute("ct", "kc/admin/adminInquiry/inqList");
+		m.addAttribute("cCss", "/static/css/admin/inqList.css");
 	
-		return "kc/admin/adminInquiry/inqList";
+		return "common/layouts/adminLayout";
 	}
 	
 //	@GetMapping("/inq/inqList")
@@ -64,7 +67,10 @@ public class AdminController {
 	public String inqDetailPage(@PathVariable("inq_num") int inq_num,Model m) {
 		InquiryResponseDTO inqDTO=bSvc.getInq(inq_num);
 		m.addAttribute("inq", inqDTO);
-		return "kc/admin/adminInquiry/inqDetail";
+		m.addAttribute("title", "KeeperCloset-관리자 페이지");
+		m.addAttribute("ct", "kc/admin/adminInquiry/inqDetail");
+		m.addAttribute("cCss", "/static/css/admin/inqDetail.css");
+		return "common/layouts/adminLayout";
 	}
 	
 	@GetMapping("/inq/commentform/{inq_num}")
@@ -74,7 +80,10 @@ public class AdminController {
 		RvResponseDTO rvDTO=aSvc.getRv(inq.getMember().getUnum());
 		m.addAttribute("i", inq);
 		m.addAttribute("rv", rvDTO);
-		return "kc/admin/adminInquiry/commentForm";
+		m.addAttribute("title", "KeeperCloset-관리자 페이지");
+		m.addAttribute("ct", "kc/admin/adminInquiry/commentForm");
+		m.addAttribute("cCss", "/static/css/admin/commentForm.css");
+		return "common/layouts/adminLayout";
 	}
 	
 	@PostMapping("/inq/addComment/{inq_num}")
@@ -94,8 +103,10 @@ public class AdminController {
 		RvResponseDTO rvDTO=aSvc.getRv(inq.getMember().getUnum());
 		m.addAttribute("i", inq);
 		m.addAttribute("rv", rvDTO);
-		
-		return "kc/admin/adminInquiry/commentEdit";
+		m.addAttribute("title", "KeeperCloset-관리자 페이지");
+		m.addAttribute("ct", "kc/admin/adminInquiry/commentEdit");
+		m.addAttribute("cCss", "/static/css/admin/commentEdit.css");
+		return "common/layouts/adminLayout";
 	}
 	
 	@PostMapping("/inq/editComment/{inq_num}")

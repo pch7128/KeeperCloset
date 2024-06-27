@@ -3,17 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<script 
-	src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous">
-</script>
-<script>
-	function backUrl(){
-		 window.history.back();
-	}
-</script>
 </head>
 <body>
-	<div>
+	<div th:fragment="main-content">
 		문의등록 실패
 		<button class="backbtn" onclick="backUrl()">이전</button>
 	</div>

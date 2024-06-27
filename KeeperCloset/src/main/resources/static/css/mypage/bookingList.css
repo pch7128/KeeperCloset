@@ -1,0 +1,138 @@
+@charset "UTF-8";
+
+
+	main{
+		margin-top:100px;
+		margin-bottom: 100px;
+	}
+	.RvCheckSection{
+		margin-left: 12rem;
+		margin-right: 12rem;
+		position: relative;
+	}
+	.rvlistwrap{
+		display: flex;
+    	flex-direction: column;
+	}
+	.tablewrap{
+		margin-top: 65px;
+	}
+	.rvTable{
+		width: 100%;
+		margin: 0 auto;
+		border-top: 1px solid gray;
+		border-collapse: collapse;
+		table-layout: fixed;
+		border-spacing: 0;
+	}
+	thead th{
+		height: 65px;
+		border-bottom: 1px solid gray;
+		font-size: 16px;
+		font-weight: 400px;
+	}
+	.inq_content{
+		height: 55px;
+		text-align: center;
+	}
+	table .inq_content:hover{
+		background-color: #f3f3f3;
+	}
+	.inq_content td{
+		border-bottom: 1px solid #f5f5f5;
+		font-size: 14px;
+		font-weight: 300;
+		color: black;
+	}
+	
+	.noRv{
+		text-align: center;
+		margin-top: 20px;
+	}
+	
+/*	  토글 내용   */
+
+	.detailwrap{
+		position: relative;
+		margin-left: 100px;
+    	margin-right: 100px;
+		margin-top: 50px;
+	}
+	.detailborder{
+		padding: 20px;
+	    border: 1px solid gainsboro;
+	    border-radius: 10px;
+	}
+	
+	.detail-row{
+    	display: flex;
+		align-items: center;
+    	text-align: center;
+		width: 100%;
+    	height: 50px;
+		
+	}
+	
+	.detail-row:not(:last-child){
+		border-bottom: 1px solid gainsboro;
+	}
+	.att{
+		width: 200px;
+	}
+	.rvDetail{
+		text-align: center;
+    	width: 100%;
+	}
+	.revbtn{
+		color: black;
+		border: 1px solid black;
+		padding: 5px;
+		border-radius: 5px;
+		font-weight: 500;
+	}
+	.cbtn{
+		color: white;
+		background-color:black;
+		border: 1px solid;
+		padding: 5px;
+		border-radius: 5px;
+		font-weight: 500;
+	}
+	
+	/* page */
+	
+	.pages ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 20px 0;
+    text-align: center;
+	}
+	
+	.pages ul li {
+	    display: inline-block;
+	    margin: 0 5px;
+	}
+	
+	.pages ul li a {
+	    display: inline-block;
+	    width: 30px; /* 원하는 크기로 조절 */
+	    height: 30px; /* 원하는 크기로 조절 */
+	    line-height: 30px; /* 버튼 내부의 텍스트를 중앙에 정렬 */
+	    text-align: center;
+	    border-radius: 50%; /* 원 모양으로 만들기 */
+	    background-color: #f0f0f0; /* 배경색 설정 */
+	    text-decoration: none; /* 링크 밑줄 제거 */
+	    color: #333; /* 텍스트 색상 */
+	}
+	
+	.pages ul li.disable a {
+	    pointer-events: none; /* 비활성 상태일 때 클릭 방지 */
+	    background-color: #ccc; /* 비활성 상태일 때 배경색 변경 */
+	}
+	
+	.pages ul li.active a {
+	    font-weight: bold; /* 현재 페이지 강조 */
+	    background-color: black; /* 현재 페이지 배경색 변경 */
+	    color: #fff; /* 현재 페이지 텍스트 색상 변경 */
+	}
+	

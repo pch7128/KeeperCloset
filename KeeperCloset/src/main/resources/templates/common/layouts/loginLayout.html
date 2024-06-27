@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      th:decorate="layout">
+
+<head>
+    <meta charset="UTF-8">
+    <title th:text=${title}>KeeperCloset</title>
+    <link rel="stylesheet" href="/static/css/header.css">
+    <link th:if="${cCss}" th:href="@{${cCss}}" rel="stylesheet">
+    <script 
+	src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous">
+	</script>
+	<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>	
+</head>
+<body>
+	<header>
+		<div class="headerM">
+			<div class="mainlogo">
+				<a href="/keep/main">KeeperCloset</a>
+			</div>
+			<menu>
+				<ul>
+					<li>
+						<a href="/rv/keeping">예약하기</a>
+					</li>
+					<li>
+						<a href="/review/list">이용후기</a>
+					</li>
+					<li>
+						<a href="">문의사항</a>
+					</li>
+					<li>
+						<th:block sec:authorize="isAnonymous()">
+							<a href="/user/login">로그인</a>
+						</th:block>
+						<th:block sec:authorize="isAuthenticated()">
+							<a href="/user/mypage/inquiry" sec:authentication="principal.member.id">
+						</th:block>
+					</li>
+				</ul>
+			</menu>
+			<div class="logoutT" sec:authorize="isAuthenticated()">
+					<a href="/logout">로그아웃</a>
+			</div>
+		</div>
+	</header>
+
+    <section th:fragment="content">
+        <div class="container">
+            <div th:replace="~{${ct} :: main-content}"></div>
+        </div>
+    </section>
+</body>
+ 	<script defer src="/static/js/joinForm.js"></script>
+</html>

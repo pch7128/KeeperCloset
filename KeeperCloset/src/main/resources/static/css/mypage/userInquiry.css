@@ -1,0 +1,119 @@
+@charset "UTF-8";
+	main{
+		margin-top:100px;
+		margin-bottom: 100px;
+	
+	}
+	.mainCon{
+		display: flex;
+		width: 80%;
+		margin: 0 auto;
+	}
+	aside{
+		margin-top: 20px;
+    	padding-left: 20px;
+		width: 240px;
+		flex-shrink: 0;
+	}
+	aside ul,li{
+		list-style: none;
+	}
+	.mpNav{
+		height: 200px;
+	}
+	.mpNavC{
+		font-size: 17px;
+		font-weight: 400;
+		padding:15px;
+		
+	}
+	.mpNavC a{
+		color: rgb(179, 179, 179);
+		
+	}
+
+	.mpNavC:hover{
+		background-color: #fafafa;
+	}
+	
+	.mpNavC:active{
+		background-color: #fafafa;
+	}
+	.mpNavC:active a{
+		color: black;
+	}
+	.mpNavC:hover a {
+		color: black;
+	}
+	.mpA:active{
+		color: black;
+	}
+	.inqSection{
+		margin-left: 10px;
+		position: relative;	
+		flex-grow: 1;
+	}
+	.inqListWrap{
+		width: 650px;
+    	margin: 0 auto;
+	}
+	.top{
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+		align-items: center;
+	}
+	.top a:visited{
+		color:white;
+	}
+	.addInqbtn{
+		border: 1px solid;
+		padding: 7px;
+		background-color: black;
+		color: white;
+		font-weight: 200;
+		font-size: 15px;
+		cursor: pointer;
+	}
+	.slash{
+		border-bottom: 1px solid rgb(217, 217, 217);
+		margin-top: 20px;
+		margin-bottom: 20px;
+	}
+	
+	.ContentWrap{
+		margin: 0 auto;
+    	text-align: center;
+		width: 600px;
+		border-bottom: 1px solid rgb(245, 245, 245);
+    	padding: 15px 0px 17px;
+    	cursor: pointer;
+	}
+	.inqC{
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+	}
+	.inqC:focus{
+		background-color: #fafafa;
+		cursor: pointer;
+	}
+	.comm{
+		flex-shrink: 0;
+		width: 136px;
+		margin-right: 10px;
+		color: cornflowerblue;
+	}
+	.inqTitle{
+		flex: 1 1 0%;
+		text-align: left;
+		margin-left: 15px;
+	}
+	.inqDate{
+		font-size: 13px;
+	}
+	.noContent{
+		margin:0 auto;
+		text-align: center;
+		margin-top: 50px;
+	}
