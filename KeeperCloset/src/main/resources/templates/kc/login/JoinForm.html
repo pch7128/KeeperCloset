@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http//www.thymeleaf.org">
+<html xmlns:th="http//www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
 <meta charset="UTF-8">
 <title>회원가입</title>
@@ -60,7 +61,7 @@
 	}
 /*	header end  */
 		
-main{
+	main{
 		
 		margin-top: 100px;
     	margin-bottom: 100px;
@@ -76,17 +77,29 @@ main{
 		justify-content: center;
 		align-items: center;
 	}
+	.slash{
+		border-bottom: 1px solid rgb(217, 217, 217);
+		margin-top: 20px;
+		margin-bottom: 20px;
+		width: 380px;
+	}
+	.notice li{
+		font-size: 14px;
+	}
 	#joinForm{
-		height: 700px;
+		height: 900px;
 		display: flex;
 		flex-direction: column;
 		justify-content: space-between;
 	}
-	.data-brackets-id-106{
+	.data-brackets-id-106,.data-brackets-id-107{
 		display: flex;
 		flex-direction: column;
 		align-items: flex-start;
 		justify-content: space-between;
+	}
+	.col{
+		display: flex;
 	}
 	.inputwrap{
 		border-bottom: 1px solid gray;
@@ -95,43 +108,97 @@ main{
 	}
 	.inputdata{
 		border: none;
+		width: 200px;
 		height: 100%;
 		padding-left: 3px;
-		font-size: 18px;
 	}
 	.inputdata:focus{
 		outline: none !important;
 	}
-	
+	.inputbtn{
+		margin-left: 10px;
+		
+	}
+	#okemail{
+		padding: 11px;
+		border: 1px solid gray;
+		border-radius: 3px;
+		background-color:  transparent;
+		cursor: pointer;
+		
+	}
+	#okpwd{
+		width: 66px;
+		border: 1px solid gray;
+		border-radius: 3px;
+		padding: 4px;
+		background-color:  transparent;
+		cursor: pointer;
+	}
+	.data-brackets-id-107 input:focus{
+		outline: none !important;
+	}
+	.addP{
+		font-size: 13px;
+	}
+	.addTop{
+		margin-top: 30px;
+		display: flex;
+	}
+	.addNWrap{
+		width: 240px;
+		border-bottom: 1px solid gray;
+		height: 40px;
+	}
+	#add_zipcode,.addT{
+		border: none;
+		height: 100%;
+		width: 100%;	
+	}
+	.addBottom{
+		display: flex;
+    	flex-direction: column;
+		margin-top: 20px;
+		height: 110px;
+		justify-content: space-between;
+	}
+	.findzip{
+		width: 125px;
+		margin-left: 10px;
+		background-color: transparent;
+		border: 1px solid gray;
+		border-radius: 3px;
+		cursor: pointer;
+	}
+	.addrWrap{
+		width: 300px;
+		height: 40px;
+		border-bottom: 1px solid gray;
+	}
 	.btnwrap{
 		margin: 0 auto;
     	text-align: center;
+		width: 100%;
+	}
+	.joinbtn{
+		width: 100%;
+		height: 40px;
+		border: none;
+		border-radius: 4px;
+		font-weight: 700;
+		cursor: pointer;
+	}
+	.checking{
+		font-size: 13px;
+		color:red;
+		font-weight: 300;
 	}
 </style>
 <script 
 	src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous">
 </script>
-<script>
-	function join(){
-		
-		var data=$('#joinForm').serialize();
-		
-		$.ajax({
-			url:'/user/signup',
-			type:'post',
-			cache:false,
-			data: data,
-			dataType:'json',
-			success:function(res){
-				alert(res.result ? '가입 성공':'실패');
-				location.href='/user/login';
-			},
-			error:function(xhr, status, err){
-				alert(err);
-			}
-		});
-	}
-</script>
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+
 </head>
 <body>
 	<header>
@@ -169,49 +236,76 @@ main{
 	<main>
 		<section class="joinSection">
 			<div class="wrap">
-				<div><h1>회원가입</h1></div>
+				<div>
+					<h1 class="joinT">회원가입</h1>
+				</div>
+				<div>
+					<div class="slash"></div>
+					<ul class="notice">
+						<li>모든 사항은 필수로 입력해주시길바랍니다.</li>
+						<li>입력하신 정보는 예약 시 기본 정보로 사용됩니다.</li>
+					</ul>
+				</div>
 				<div style="margin-top: 50px;">
-					<form id="joinForm" method="post">
+					<form id="joinForm" method="post" action="/user/signup" onsubmit="return join()">
 						<div class="data-brackets-id-106">
 							<label>이름</label>
 							<div class="inputwrap">
-								<input class="inputdata" type="text" name="u_name" id="u_name">
+								<input class="inputdata" oninput="nameCheck()" type="text" name="u_name" id="u_name">
 							</div>
+							<p class="checking" id="namecheck"></p>
 						</div>
 						<div class="data-brackets-id-106">
 							<label>아이디(이메일)</label>
-							<div class="inputwrap">
-								<input class="inputdata" type="text" name="u_email" id="u_email">
+							<div class="col">
+								<div class="inputwrap">
+									<input class="inputdata" oninput="idCheck()" type="text" name="u_id" id="u_id" placeholder="keeper@keepercloset.com">
+								</div>
+							<button class="inputbtn" onclick="duplication()" id="okemail" type="button">중복확인</button>
 							</div>
-							<button type="button">중복확인</button>
+							<p class="checking" id="idcheck"></p>
 						</div>
 						<div class="data-brackets-id-106">
 							<label>비밀번호</label>
 							<div class="inputwrap">
-								<input class="inputdata" type="password" name="u_pwd" id="u_pwd">
+								<input class="inputdata" oninput="pwdCheck()" type="password" name="u_pwd" id="u_pwd">
 							</div>
+							<p class="checking" id="pwdcheck"></p>
 						</div>
 						<div class="data-brackets-id-106">
 							<label>비밀번호 확인</label>
-							<div class="okpwd">
+							<div class="col">
 								<div class="inputwrap">
-									<input class="inputdata" type="password" id="u_pwd">
+									<input class="inputdata" type="password" id="u_pwd2">
 								</div>
-								<button type="button">확인</button>
+								<button class="inputbtn" onclick="pwdConfirm()" id="okpwd" type="button">확인</button>
 							</div>
 							<div>
 
 							</div>
 						</div>
+						<div class="data-brackets-id-107">
+							<label>주소</label>
+							<p class="addP">*예약 시 보관 짐 픽업할 기본 주소입니다.</p>
+							<div class="addTop">
+								<div class="addNWrap"><input type="text" name="add_zipcode" id="add_zipcode" placeholder="우편번호"></div>
+								<button class="findzip" onclick="DaumPostcode()" type="button">우편번호 찾기</button>
+							</div>
+							<div class="addBottom">
+								<div class="addrWrap"><input id="addr" name="addr" class="addT" type="text" placeholder="주소"></div>
+								<div class="addrWrap"><input id="add_detail" name="add_detail" class="addT" type="text" placeholder="상세주소"></div>
+								<input type="hidden" id="add_ref" name="add_ref">
+							</div>
+						</div>
 						<div class="data-brackets-id-106">
 							<label>번호</label>
 							<div class="inputwrap">
-								<input class="inputdata" type="text" name="u_tel" id="u_tel">
+								<input class="inputdata" type="text" name="u_tel" id="u_tel" onkeyup="cell()" maxlength="13">
 							</div>
 						</div>
 						<input type="hidden" name="u_authority" id="u_authority" value="ROLE_USER">
 						<div class="btnwrap">
-							<button type="button" onclick="join()">가입</button>
+							<button type="submit" class="joinbtn">가입</button>
 						</div>
 					</form>
 				</div>
@@ -219,4 +313,5 @@ main{
 		</section>
 	</main>
 </body>
+<script defer src="/static/js/joinForm.js"></script>
 </html>

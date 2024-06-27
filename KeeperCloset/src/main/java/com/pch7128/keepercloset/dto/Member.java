@@ -53,6 +53,9 @@ public class Member {
 	@Column(name="provider_id")
 	private String providerid;
 	
+	@OneToMany(mappedBy = "member")
+	private List<Address> addlist;
+	
 	@OneToMany(mappedBy = "member" ,cascade = CascadeType.ALL)
 	private List<Reservation> rvlist;
 	

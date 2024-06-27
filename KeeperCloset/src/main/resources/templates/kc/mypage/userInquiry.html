@@ -3,6 +3,7 @@
 	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Insert title here</title>
 <script src="https://kit.fontawesome.com/309845435e.js" crossorigin="anonymous"></script>
 <style>
@@ -64,12 +65,56 @@
 	main{
 		margin-top:100px;
 		margin-bottom: 100px;
+	
+	}
+	.mainCon{
+		display: flex;
+		width: 80%;
+		margin: 0 auto;
+	}
+	aside{
+		margin-top: 20px;
+    	padding-left: 20px;
+		width: 240px;
+		flex-shrink: 0;
+	}
+	aside ul,li{
+		list-style: none;
+	}
+	.mpNav{
+		height: 200px;
+	}
+	.mpNavC{
+		font-size: 17px;
+		font-weight: 400;
+		padding:15px;
 		
 	}
+	.mpNavC a{
+		color: rgb(179, 179, 179);
+		
+	}
+
+	.mpNavC:hover{
+		background-color: #fafafa;
+	}
+	
+	.mpNavC:active{
+		background-color: #fafafa;
+	}
+	.mpNavC:active a{
+		color: black;
+	}
+	.mpNavC:hover a {
+		color: black;
+	}
+	.mpA:active{
+		color: black;
+	}
 	.inqSection{
-		margin-left: 12rem;
-		margin-right: 12rem;
+		margin-left: 10px;
 		position: relative;	
+		flex-grow: 1;
 	}
 	.inqListWrap{
 		width: 650px;
@@ -111,7 +156,7 @@
 		flex-direction: row;
 		justify-content: space-between;
 	}
-	.ContentWrap:hover{
+	.inqC:focus{
 		background-color: #fafafa;
 		cursor: pointer;
 	}
@@ -134,7 +179,11 @@
 		text-align: center;
 		margin-top: 50px;
 	}
+
 </style>
+<script>
+
+</script>
 </head>
 <body>
 	<header>
@@ -169,48 +218,63 @@
 		</div>
 	</header>
 	<main>
-		<section class="inqSection">
-			<div class="inqListWrap">
-				<div class="top">
-					<h1 style="font-size: 30px;">1:1문의</h1>
-					<div>
-						<a class="addInqbtn" href="/user/mypage/addinquiry">문의하기</a>
-					</div>
-				</div>
-				<div class="slash"></div>
-				<th:block th:each="i:${inq}">
-					<div class="ContentWrap" 
-					 th:onclick="|location.href='/user/mypage/inquiry_detail/' + [[${i.inq_num}]]|">
-						<div class="inqC">
-							<div class="comm">
-								<th:block th:if="${i.comm == null}">
-								<div style="color:red;">
-									답변 대기
-								</div>
-								</th:block>
-								<th:block th:if="${i.comm != null}">
-								답변 완료
-								</th:block>
-							</div>
-							<div>
-								<i class="fa-sharp fa-regular fa-q"></i>
-							</div>
-							<div class="inqTitle">
-								[[${i.inq_title}]]
-							</div>
-							<div class="inqDate">
-								[[${i.inq_date}]]
-							</div>
+		<div class="mainCon">
+			<aside>
+				<ul class="mpNav">
+					<li class="mpNavC">
+						<a class="mpA" href="" >내 정보 수정</a>
+					</li>
+					<li class="mpNavC">
+						<a class="mpA" href="/user/mypage/inquiry" >1:1 문의</a>
+					</li>
+					<li class="mpNavC">
+						<a class="mpA" href="/user/mypage/checkdetails">예약내역 확인</a>
+					</li>
+				</ul>
+			</aside> 
+			<section class="inqSection">
+				<div class="inqListWrap">
+					<div class="top">
+						<h1 style="font-size: 30px;">1:1문의</h1>
+						<div>
+							<a class="addInqbtn" href="/user/mypage/addinquiry">문의하기</a>
 						</div>
 					</div>
-				</th:block>
-				<th:block th:if="${inq.empty}">
-					<div class="noContent">
-						<p>문의하신 내역이 없습니다.</p>
-					</div>
-				</th:block>
-			</div>
-		</section>
+					<div class="slash"></div>
+					<th:block th:each="i:${inq}">
+						<div class="ContentWrap" 
+						 th:onclick="|location.href='/user/mypage/inquiry_detail/' + [[${i.inq_num}]]|">
+							<div class="inqC">
+								<div class="comm">
+									<th:block th:if="${i.comm == null}">
+									<div style="color:red;">
+										답변 대기
+									</div>
+									</th:block>
+									<th:block th:if="${i.comm != null}">
+									답변 완료
+									</th:block>
+								</div>
+								<div>
+									<i class="fa-sharp fa-regular fa-q"></i>
+								</div>
+								<div class="inqTitle">
+									[[${i.inq_title}]]
+								</div>
+								<div class="inqDate">
+									[[${i.inq_date}]]
+								</div>
+							</div>
+						</div>
+					</th:block>
+					<th:block th:if="${inq.empty}">
+						<div class="noContent">
+							<p>문의하신 내역이 없습니다.</p>
+						</div>
+					</th:block>
+				</div>
+			</section>
+		</div>
 	</main>
 
 </body>

@@ -56,16 +56,25 @@ public class UserController {
 		return "kc/login/JoinForm";
 	}
 	
-	@PostMapping("/signup")
+	@PostMapping("/signup/idcheck")
 	@ResponseBody
-	public Map<String, Boolean> join(JoinDTO j, Model m){
-		
-		boolean result=mSvc.join(j);
-		System.out.println("회원가입 결과:"+result);
-		Map<String,Boolean> map = new HashMap<>();
+	public Map<String, Boolean> idchecking(@RequestParam("id") String id){
+		Map<String, Boolean> map = new HashMap<>();
+		boolean result=mSvc.joinId(id);
 		map.put("result", result);
-		
 		return map;
+	}
+	
+	@PostMapping("/signup")
+	public String join(JoinDTO j, Model m){
+		
+		System.out.println(j.getAddlist().size());
+		boolean result=mSvc.join(j);
+		if(result){
+			return "kc/login/signUpS";
+		} else
+		
+		return "kc/login/signUpF";
 	}
 	
 	@GetMapping("/mypage")

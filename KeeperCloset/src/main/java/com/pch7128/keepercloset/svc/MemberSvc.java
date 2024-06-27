@@ -15,6 +15,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.pch7128.keepercloset.dto.Address;
 import com.pch7128.keepercloset.dto.JoinDTO;
 import com.pch7128.keepercloset.dto.Member;
 import com.pch7128.keepercloset.dto.MemberDTO;
@@ -52,16 +53,41 @@ public class MemberSvc implements UserDetailsService{
 		return new PrincipalDetails(member);
 	}
 	
+	public boolean joinId(String id) {
+		
+		Member member =mr.findById(id);
+		if(member==null) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
 	public boolean join(JoinDTO j) {
+		
+		if(j.getAddlist()==null) {
+			j.setAddlist(new ArrayList<>());
+		}
+			
 		
 		Member newMember = new Member()
 				.builder()
-				.name(j.getName())	
-				.id(j.getU_email())
+				.name(j.getU_name())	
+				.id(j.getU_id())
 				.u_pwd(enc.encode(j.getU_pwd()))
 				.utel(j.getU_tel())
 				.uauthority(j.getU_authority())
 				.build();
+		List<Address> adl=j.getAddlist().stream()
+		           .map(addressDTO -> new Address(
+		                    addressDTO.getAdd_zipcode(), 
+		                    addressDTO.getAddr(),
+		                    addressDTO.getAdd_detail(),
+		                    addressDTO.getAdd_ref(), 
+		                    addressDTO.getWhole_add(), 
+		                    newMember))
+				.collect(Collectors.toList());
+		newMember.setAddlist(adl);		
 		Member m=mr.save(newMember);
 		if(m==null) {
 			return false;
